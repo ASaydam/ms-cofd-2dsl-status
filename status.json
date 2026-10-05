@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-05T13:59:27+03:00",
+ "generated": "2026-10-05T14:11:17+03:00",
  "cases": 4500,
  "runs": [
   {
@@ -46,8 +46,8 @@
    "end_time": 24,
    "core_hours": 212.11,
    "mean_hours": 0.0471,
-   "done_1h": 3,
-   "done_6h": 1351,
+   "done_1h": 0,
+   "done_6h": 1146,
    "done_24h": 4508
   },
   {
@@ -70,17 +70,17 @@
    "run": "16x",
    "label": "0.25 mm",
    "target": 4476,
-   "done": 15,
+   "done": 18,
    "running": 116,
-   "pending": 123,
-   "submitted": 123,
+   "pending": 124,
+   "submitted": 124,
    "failed": 0,
    "end_time": 0,
-   "core_hours": 51.25,
-   "mean_hours": 3.4166,
-   "done_1h": 9,
-   "done_6h": 15,
-   "done_24h": 15
+   "core_hours": 67.87,
+   "mean_hours": 3.5722,
+   "done_1h": 11,
+   "done_6h": 19,
+   "done_24h": 19
   }
  ],
  "unsteady": [
@@ -112,11 +112,11 @@
  "window": "asaydam_oct26",
  "queue": {
   "running": 116,
-  "pending": 123
+  "pending": 124
  },
- "core_hours": 263.4,
- "quota_gib": 228.5,
- "backlog_gib": 0.0,
+ "core_hours": 280.0,
+ "quota_gib": 228.9,
+ "backlog_gib": 0.24,
  "pause_gib": 600,
  "nodes": {
   "be12": 12,
