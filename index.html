@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MS-COFD-2DSL Progress</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='3' fill='%233b6fd4'/><rect x='3' y='9' width='2' height='4' fill='white'/><rect x='7' y='6' width='2' height='7' fill='white'/><rect x='11' y='3' width='2' height='10' fill='white'/></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --text: #1d2330; --muted: #677085; --line: #e3e6ec;
+    --accent: #3b6fd4; --good: #1f9d63; --warn: #c98a0c; --bad: #c8414b; --track: #eceff4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #11141a; --panel: #1a1e26; --text: #e6e9ef; --muted: #98a1b3; --line: #2b313d;
+      --accent: #6f9cf0; --good: #3fc287; --warn: #e3ac3c; --bad: #ec6b74; --track: #262c37;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #11141a; --panel: #1a1e26; --text: #e6e9ef; --muted: #98a1b3; --line: #2b313d;
+    --accent: #6f9cf0; --good: #3fc287; --warn: #e3ac3c; --bad: #ec6b74; --track: #262c37;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 20px 16px 40px; }
+  header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; }
+  h1 { font-size: 1.35rem; margin: 0; }
+  h2 { font-size: 1rem; margin: 0 0 12px; }
+  .sub { color: var(--muted); font-size: .9rem; }
+  .pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .8rem; font-weight: 600; }
+  .pill.live { background: color-mix(in srgb, var(--good) 18%, transparent); color: var(--good); }
+  .pill.stale { background: color-mix(in srgb, var(--warn) 20%, transparent); color: var(--warn); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 16px 0; }
+  .card, section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+  section { margin-top: 12px; }
+  .k { color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; }
+  .v { font-size: 1.5rem; font-weight: 650; margin-top: 2px; }
+  .s { color: var(--muted); font-size: .85rem; }
+  .bar { height: 10px; background: var(--track); border-radius: 6px; overflow: hidden; display: flex; }
+  .bar span { display: block; height: 100%; }
+  .bar .done { background: var(--good); }
+  .bar .run { background: var(--accent); opacity: .55; }
+  table { width: 100%; border-collapse: collapse; }
+  td, th { padding: 8px 6px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  th { color: var(--muted); font-weight: 500; font-size: .8rem; }
+  td.num, th.num { text-align: right; white-space: nowrap; }
+  .levelname { font-weight: 600; white-space: nowrap; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; font-size: .85rem; }
+  .chartbox { position: relative; height: 280px; }
+  details summary { cursor: pointer; color: var(--accent); }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .82rem; }
+  .err { color: var(--bad); }
+  .scroll { overflow-x: auto; }
+  footer { color: var(--muted); font-size: .8rem; margin-top: 20px; }
+  @media (max-width: 640px) { .hide-s { display: none; } .v { font-size: 1.3rem; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1>MS-COFD-2DSL dataset production</h1>
+      <div class="sub">2D steady laminar flow around obstacles · OpenFOAM on the KUACC cluster</div>
+    </div>
+    <div><span id="state" class="pill live">loading</span> <span id="updated" class="sub"></span></div>
+  </header>
+
+  <div class="grid">
+    <div class="card"><div class="k">Work done</div><div class="v" id="k-work">–</div><div class="s" id="k-work-s"></div></div>
+    <div class="card"><div class="k">Estimated finish</div><div class="v" id="k-eta">–</div><div class="s" id="k-eta-s"></div></div>
+    <div class="card"><div class="k">Jobs</div><div class="v" id="k-jobs">–</div><div class="s" id="k-jobs-s"></div></div>
+    <div class="card"><div class="k">Finished, last hour</div><div class="v" id="k-rate">–</div><div class="s" id="k-rate-s"></div></div>
+    <div class="card"><div class="k">No steady solution</div><div class="v" id="k-unsteady">–</div><div class="s" id="k-unsteady-s"></div></div>
+    <div class="card"><div class="k">Disk quota</div><div class="v" id="k-quota">–</div><div class="s" id="k-quota-s"></div></div>
+  </div>
+
+  <section>
+    <h2>Runs per mesh level</h2>
+    <div class="scroll"><table>
+      <thead><tr><th>Level</th><th style="width:38%">Progress</th><th class="num">Done</th><th class="num">Running</th>
+        <th class="num hide-s">Failed</th><th class="num hide-s">Mean h / run</th><th class="num hide-s">Last 24 h</th></tr></thead>
+      <tbody id="levels"></tbody>
+    </table></div>
+    <div class="s" style="margin-top:8px">Green: finished · blue: running. The 0.5 and 0.25 mm meshes are run only for
+      cases whose 1 mm solution converged.</div>
+  </section>
+
+  <section>
+    <h2>Progress over time</h2>
+    <div class="chartbox"><canvas id="chart"></canvas></div>
+  </section>
+
+  <section>
+    <h2>Nodes in use</h2>
+    <div class="chips" id="nodes"></div>
+  </section>
+
+  <section>
+    <h2>Problems</h2>
+    <div id="failures" class="s"></div>
+    <details style="margin-top:10px"><summary id="unsteady-sum">Cases without a steady solution</summary>
+      <p class="s">Their 1 mm run stopped at the iteration cap: the flow is not steady. They are replaced from reserve
+        geometries at the end, so every class keeps 300 converged cases.</p>
+      <div class="mono" id="unsteady"></div></details>
+  </section>
+
+  <footer>The cluster publishes the status every 10 minutes; this page reloads it every minute.
+    <span id="err" class="err"></span></footer>
+</main>
+
+<script>
+const BASE = 'https://raw.githubusercontent.com/ASaydam/ms-cofd-2dsl-status/data/';
+// rough hours per run when a level has no finished runs yet (pilots)
+const DEFAULT_HOURS = {'0.25x': 0.02, 'base_fo': 0.06, 'base_lu': 0.06, '4x': 0.4, '16x': 3.5};
+const OVERHEAD = 1.08;   // meshing, arrays, attributes and archive on top of the solver time
+const COLORS = ['#8e7cc3', '#e69138', '#3b6fd4', '#1f9d63', '#c8414b'];
+let chart = null;
+
+const fmt = (x, d = 0) => Number(x).toLocaleString('en-US', {maximumFractionDigits: d, minimumFractionDigits: d});
+const hours = r => (r.mean_hours ?? DEFAULT_HOURS[r.run] ?? 1) * OVERHEAD;
+const el = id => document.getElementById(id);
+
+function ago(date) {
+  const m = Math.round((Date.now() - date) / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return `${m} min ago`;
+  const h = Math.floor(m / 60);
+  return h < 48 ? `${h} h ${m % 60} min ago` : `${Math.round(h / 24)} days ago`;
+}
+
+function render(s) {
+  const generated = new Date(s.generated);
+  const stale = Date.now() - generated > 30 * 60000;
+  el('state').textContent = stale ? 'stale' : 'live';
+  el('state').className = 'pill ' + (stale ? 'stale' : 'live');
+  el('updated').textContent = `updated ${ago(generated)} · ${generated.toLocaleString()}`;
+
+  const runs = s.runs;
+  const total = runs.reduce((a, r) => a + r.target * hours(r), 0);
+  const done = runs.reduce((a, r) => a + Math.min(r.done, r.target) * hours(r), 0);
+  const left = total - done;
+  const tasks = runs.reduce((a, r) => a + r.done, 0), tasksTotal = runs.reduce((a, r) => a + r.target, 0);
+  el('k-work').textContent = `${fmt(100 * done / total, 1)} %`;
+  el('k-work-s').textContent = `${fmt(tasks)} of ${fmt(tasksTotal)} runs, weighted by compute`;
+
+  const running = s.queue.running;
+  if (running > 0 && left > 0) {
+    const h = left / running;
+    const eta = new Date(generated.getTime() + h * 3600e3);
+    el('k-eta').textContent = eta.toLocaleDateString(undefined, {month: 'short', day: 'numeric'}) + ' ' +
+      eta.toLocaleTimeString(undefined, {hour: '2-digit', minute: '2-digit'});
+    el('k-eta-s').textContent = `in ~${fmt(h, h < 10 ? 1 : 0)} h at ${running} running jobs`;
+  } else {
+    el('k-eta').textContent = left > 0 ? '–' : 'done';
+    el('k-eta-s').textContent = left > 0 ? 'no jobs running' : '';
+  }
+  el('k-jobs').textContent = `${running} running`;
+  el('k-jobs-s').textContent = `${s.queue.pending} waiting · QoS ${s.window}`;
+  const lastHour = runs.reduce((a, r) => a + r.done_1h, 0);
+  el('k-rate').textContent = fmt(lastHour);
+  el('k-rate-s').textContent = runs.filter(r => r.done_1h).map(r => `${r.label} ${r.done_1h}`).join(' · ') || 'none';
+  el('k-unsteady').textContent = fmt(s.unsteady.length);
+  el('k-unsteady-s').textContent = `${fmt(100 * s.unsteady.length / s.cases, 1)} % of ${fmt(s.cases)} cases`;
+  el('k-quota').textContent = `${fmt(s.quota_gib)} GiB`;
+  el('k-quota-s').textContent = `pauses at ${s.pause_gib} · limit 1024 (mirrored)`;
+
+  el('levels').innerHTML = runs.map(r => {
+    const pd = 100 * Math.min(r.done, r.target) / r.target, pr = 100 * Math.min(r.running, r.target - r.done) / r.target;
+    return `<tr><td class="levelname">${r.label}</td>
+      <td><div class="bar"><span class="done" style="width:${pd}%"></span><span class="run" style="width:${pr}%"></span></div></td>
+      <td class="num">${fmt(r.done)} / ${fmt(r.target)}</td><td class="num">${fmt(r.running)}</td>
+      <td class="num hide-s">${r.failed ? `<span class="err">${r.failed}</span>` : 0}</td>
+      <td class="num hide-s">${r.mean_hours == null ? '–' : fmt(r.mean_hours, r.mean_hours < 1 ? 2 : 1)}</td>
+      <td class="num hide-s">${fmt(r.done_24h)}</td></tr>`;
+  }).join('');
+
+  const nodes = Object.entries(s.nodes).sort();
+  el('nodes').innerHTML = nodes.length ? nodes.map(([n, c]) => `<span class="chip">${n} · ${c}</span>`).join('')
+                                       : '<span class="s">none</span>';
+
+  el('failures').innerHTML = s.failures.length
+    ? `<b>${s.failures.length} failed tasks</b> (submitted again up to three times):<div class="mono" style="margin-top:6px">` +
+      s.failures.slice(-10).map(f => `${f.run} ${f.case}: ${f.reason.replace(/</g, '&lt;')}`).join('<br>') + '</div>'
+    : 'No failed tasks.';
+  el('unsteady-sum').textContent = `Cases without a steady solution (${s.unsteady.length})`;
+  el('unsteady').textContent = s.unsteady.join(', ') || 'none';
+}
+
+function renderHistory(text, status) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return;
+  const head = lines[0].split(',');
+  const rows = lines.slice(1).map(l => l.split(','));
+  const x = rows.map(r => new Date(r[head.indexOf('time')]));
+  const css = getComputedStyle(document.documentElement);
+  const datasets = status.runs.map((run, i) => {
+    const col = head.indexOf('done_' + run.run);
+    return {label: run.label, borderColor: COLORS[i % COLORS.length], backgroundColor: COLORS[i % COLORS.length],
+            pointRadius: 0, borderWidth: 2, tension: 0.2,
+            data: rows.map((r, j) => ({x: x[j].getTime(), y: col < 0 ? null : 100 * Number(r[col]) / run.target}))};
+  });
+  const options = {
+    responsive: true, maintainAspectRatio: false, animation: false, interaction: {mode: 'index', intersect: false},
+    scales: {
+      x: {type: 'linear', ticks: {color: css.getPropertyValue('--muted'), maxTicksLimit: 8,
+          callback: v => new Date(v).toLocaleString(undefined, {month: 'short', day: 'numeric', hour: '2-digit'})},
+          grid: {color: css.getPropertyValue('--line')}},
+      y: {min: 0, max: 100, ticks: {color: css.getPropertyValue('--muted'), callback: v => v + ' %'},
+          grid: {color: css.getPropertyValue('--line')}}},
+    plugins: {legend: {labels: {color: css.getPropertyValue('--text'), boxWidth: 12}},
+              tooltip: {callbacks: {title: items => new Date(items[0].parsed.x).toLocaleString(),
+                                    label: item => `${item.dataset.label}: ${fmt(item.parsed.y, 1)} %`}}}};
+  if (chart) { chart.data.datasets = datasets; chart.options = options; chart.update(); }
+  else if (window.Chart) chart = new Chart(el('chart'), {type: 'line', data: {datasets}, options});
+}
+
+async function refresh() {
+  try {
+    const t = Date.now();
+    const status = await (await fetch(`${BASE}status.json?t=${t}`, {cache: 'no-store'})).json();
+    render(status);
+    el('err').textContent = '';
+    const history = await (await fetch(`${BASE}history.csv?t=${t}`, {cache: 'no-store'})).text();
+    renderHistory(history, status);
+  } catch (error) {
+    el('err').textContent = ' Could not load the status: ' + error.message;
+  }
+}
+refresh();
+setInterval(refresh, 60000);
+</script>
+</body>
+</html>
