@@ -73,19 +73,22 @@
     <div class="card"><div class="k">Estimated finish</div><div class="v" id="k-eta">–</div><div class="s" id="k-eta-s"></div></div>
     <div class="card"><div class="k">Jobs</div><div class="v" id="k-jobs">–</div><div class="s" id="k-jobs-s"></div></div>
     <div class="card"><div class="k">Finished, last hour</div><div class="v" id="k-rate">–</div><div class="s" id="k-rate-s"></div></div>
-    <div class="card"><div class="k">No steady solution</div><div class="v" id="k-unsteady">–</div><div class="s" id="k-unsteady-s"></div></div>
+    <div class="card"><div class="k">No steady solution (1 mm)</div><div class="v" id="k-unsteady">–</div><div class="s" id="k-unsteady-s"></div></div>
     <div class="card"><div class="k">Disk quota</div><div class="v" id="k-quota">–</div><div class="s" id="k-quota-s"></div></div>
+    <div class="card"><div class="k">Compute used</div><div class="v" id="k-compute">–</div><div class="s" id="k-compute-s"></div></div>
   </div>
 
   <section>
     <h2>Runs per mesh level</h2>
     <div class="scroll"><table>
       <thead><tr><th>Level</th><th style="width:38%">Progress</th><th class="num">Done</th><th class="num">Running</th>
-        <th class="num hide-s">Failed</th><th class="num hide-s">Mean h / run</th><th class="num hide-s">Last 24 h</th></tr></thead>
+        <th class="num hide-s">Failed</th><th class="num hide-s">Mean h / run</th><th class="num hide-s">Last 24 h</th>
+        <th class="num">Core-h used</th><th class="num hide-s">Core-h left (est.)</th></tr></thead>
       <tbody id="levels"></tbody>
     </table></div>
     <div class="s" style="margin-top:8px">Green: finished · blue: running. The 0.5 and 0.25 mm meshes are run only for
-      cases whose 1 mm solution converged.</div>
+      cases whose 1 mm solution converged. Core-hours: solver time (meshing, arrays and attributes add ~5–10 %); left:
+      remaining runs × mean hours per run.</div>
   </section>
 
   <section>
@@ -163,7 +166,9 @@ function render(s) {
   el('k-rate').textContent = fmt(lastHour);
   el('k-rate-s').textContent = runs.filter(r => r.done_1h).map(r => `${r.label} ${r.done_1h}`).join(' · ') || 'none';
   el('k-unsteady').textContent = fmt(s.unsteady.length);
-  el('k-unsteady-s').textContent = `${fmt(100 * s.unsteady.length / s.cases, 1)} % of ${fmt(s.cases)} cases`;
+  el('k-unsteady-s').textContent = `${fmt(100 * s.unsteady.length / s.cases, 1)} % of the cases; finer meshes skipped`;
+  el('k-compute').textContent = `${fmt(s.core_hours)} core-h`;
+  el('k-compute-s').textContent = `solver time · ~${fmt(left / OVERHEAD)} core-h left (est.)`;
   el('k-quota').textContent = `${fmt(s.quota_gib)} GiB`;
   el('k-quota-s').textContent = `pauses at ${s.pause_gib} · limit 1024 (mirrored)`;
 
@@ -174,8 +179,12 @@ function render(s) {
       <td class="num">${fmt(r.done)} / ${fmt(r.target)}</td><td class="num">${fmt(r.running)}</td>
       <td class="num hide-s">${r.failed ? `<span class="err">${r.failed}</span>` : 0}</td>
       <td class="num hide-s">${r.mean_hours == null ? '–' : fmt(r.mean_hours, r.mean_hours < 1 ? 2 : 1)}</td>
-      <td class="num hide-s">${fmt(r.done_24h)}</td></tr>`;
-  }).join('');
+      <td class="num hide-s">${fmt(r.done_24h)}</td>
+      <td class="num">${fmt(r.core_hours, r.core_hours < 100 ? 1 : 0)}</td>
+      <td class="num hide-s">${fmt(Math.max(r.target - r.done, 0) * hours(r) / OVERHEAD)}</td></tr>`;
+  }).join('') + `<tr><td class="levelname">Total</td><td></td><td class="num">${fmt(tasks)} / ${fmt(tasksTotal)}</td>
+      <td class="num">${fmt(running)}</td><td class="num hide-s"></td><td class="num hide-s"></td><td class="num hide-s">${fmt(runs.reduce((a, r) => a + r.done_24h, 0))}</td>
+      <td class="num">${fmt(s.core_hours)}</td><td class="num hide-s">${fmt(left / OVERHEAD)}</td></tr>`;
 
   const nodes = Object.entries(s.nodes).sort();
   el('nodes').innerHTML = nodes.length ? nodes.map(([n, c]) => `<span class="chip">${n} · ${c}</span>`).join('')
