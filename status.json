@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-05T14:48:12+03:00",
+ "generated": "2026-10-05T15:08:32+03:00",
  "cases": 4500,
  "runs": [
   {
@@ -8,8 +8,8 @@
    "target": 4500,
    "done": 0,
    "running": 0,
-   "pending": 97,
-   "submitted": 97,
+   "pending": 103,
+   "submitted": 103,
    "failed": 0,
    "end_time": 0,
    "core_hours": 0.0,
@@ -39,15 +39,15 @@
    "label": "1 mm",
    "target": 4500,
    "done": 4476,
-   "running": 0,
-   "pending": 24,
-   "submitted": 24,
+   "running": 6,
+   "pending": 18,
+   "submitted": 18,
    "failed": 0,
    "end_time": 24,
    "core_hours": 212.11,
    "mean_hours": 0.0471,
    "done_1h": 0,
-   "done_6h": 529,
+   "done_6h": 246,
    "done_24h": 4508
   },
   {
@@ -70,17 +70,17 @@
    "run": "16x",
    "label": "0.25 mm",
    "target": 4500,
-   "done": 25,
-   "running": 119,
+   "done": 31,
+   "running": 113,
    "pending": 0,
    "submitted": 0,
    "failed": 0,
    "end_time": 0,
-   "core_hours": 94.93,
-   "mean_hours": 3.797,
-   "done_1h": 12,
-   "done_6h": 25,
-   "done_24h": 25
+   "core_hours": 124.25,
+   "mean_hours": 4.008,
+   "done_1h": 14,
+   "done_6h": 31,
+   "done_24h": 31
   }
  ],
  "unsteady": [
@@ -109,8 +109,8 @@
   "running": 119,
   "pending": 121
  },
- "core_hours": 307.0,
- "quota_gib": 227.7,
+ "core_hours": 336.4,
+ "quota_gib": 225.3,
  "backlog_gib": 0.0,
  "pause_gib": 600,
  "nodes": {
