@@ -326,6 +326,7 @@ function sci(x) {
 }
 function duration(s) {
   if (s == null) return '–';
+  if (s < 59.5) return `${Math.round(s)} s`;
   const m = Math.round(s / 60);
   return m < 60 ? `${m} min` : `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')} min`;
 }
@@ -372,7 +373,8 @@ function renderRace(s, force = false) {
     const fin = lane.filter(j => j.stage === 'finishing');
 
     // the axis starts at the decade above the slowest runner (at most 1, at least one decade before the finish)
-    const s0 = Math.max(Math.min(Math.ceil(Math.log10(Math.max(...solving.map(j => j.residual), 1e-5))), 0), -5);
+    const slowest = solving.length ? Math.max(...solving.map(j => j.residual), 1e-5) : 1;
+    const s0 = Math.max(Math.min(Math.ceil(Math.log10(slowest)), 0), -5);
     const xOf = res => X0 + (X1 - X0) * Math.min(Math.max((s0 - Math.log10(res)) / (s0 + 6), 0), 1);
     race.lanes[run] = {xOf};
 
