@@ -135,8 +135,10 @@
     </table></div>
     <div class="s" style="margin-top:8px">Green: finished · blue: running. The 0.5 and 0.25 mm meshes are run only for
       cases whose 1 mm solution converged. Not converged: runs that stopped at their iteration cap (on the 1 mm level
-      these cases are dropped and replaced). Core-hours: solver time (meshing, arrays and attributes add ~5–10 %); left:
-      remaining runs × mean hours per run.</div>
+      these cases are dropped and replaced). Core-hours: solver time (meshing, arrays and attributes add ~5–10 %). Left:
+      estimated for every remaining case from its blockage ratio, since the solver time grows with it (0.25 mm: ~2.5 h
+      at blockage 0.12, ~12 h at 0.40). The fit comes from the pilot until half of a level is done, then from the
+      finished runs; a plain mean would be too low because the fast runs finish first.</div>
   </section>
 
   <section class="race">
@@ -192,7 +194,10 @@ const COLORS = ['#8e7cc3', '#e69138', '#3b6fd4', '#1f9d63', '#c8414b'];
 let chart = null;
 
 const fmt = (x, d = 0) => Number(x).toLocaleString('en-US', {maximumFractionDigits: d, minimumFractionDigits: d});
-const hours = r => (r.mean_hours ?? DEFAULT_HOURS[r.run] ?? 1) * OVERHEAD;
+// solver core-hours left of a level: the cluster's estimate from the blockage ratio of every case not done yet
+// (hpc/status.py hours_left), else remaining runs x mean hours per run
+const leftHours = r => r.hours_left ??
+  Math.max(r.target - r.done, 0) * (r.mean_hours ?? DEFAULT_HOURS[r.run] ?? 1);
 const el = id => document.getElementById(id);
 
 function ago(date) {
@@ -211,16 +216,15 @@ function render(s) {
   el('updated').textContent = `updated ${ago(generated)} · ${generated.toLocaleString()}`;
 
   const runs = s.runs;
-  const total = runs.reduce((a, r) => a + r.target * hours(r), 0);
-  const done = runs.reduce((a, r) => a + Math.min(r.done, r.target) * hours(r), 0);
-  const left = total - done;
+  const used = runs.reduce((a, r) => a + r.core_hours, 0);
+  const left = runs.reduce((a, r) => a + leftHours(r), 0);   // solver core-hours
   const tasks = runs.reduce((a, r) => a + r.done, 0), tasksTotal = runs.reduce((a, r) => a + r.target, 0);
-  el('k-work').textContent = `${fmt(100 * done / total, 1)} %`;
-  el('k-work-s').textContent = `${fmt(tasks)} of ${fmt(tasksTotal)} runs, weighted by compute`;
+  el('k-work').textContent = `${fmt(100 * used / Math.max(used + left, 1e-9), 1)} %`;
+  el('k-work-s').textContent = `of the compute · ${fmt(tasks)} of ${fmt(tasksTotal)} runs done`;
 
   const running = s.queue.running;
   if (running > 0 && left > 0) {
-    const h = left / running;
+    const h = left * OVERHEAD / running;
     const eta = new Date(generated.getTime() + h * 3600e3);
     el('k-eta').textContent = eta.toLocaleDateString(undefined, {month: 'short', day: 'numeric'}) + ' ' +
       eta.toLocaleTimeString(undefined, {hour: '2-digit', minute: '2-digit'});
@@ -235,7 +239,7 @@ function render(s) {
   el('k-rate').textContent = fmt(lastHour);
   el('k-rate-s').textContent = runs.filter(r => r.done_1h).map(r => `${r.label} ${r.done_1h}`).join(' · ') || 'none';
   el('k-compute').textContent = `${fmt(s.core_hours)} core-h`;
-  el('k-compute-s').textContent = `solver time · ~${fmt(left / OVERHEAD)} core-h left (est.)`;
+  el('k-compute-s').textContent = `solver time · ~${fmt(left)} core-h left (est.)`;
   el('k-quota').textContent = `${fmt(s.quota_gib)} GiB`;
   el('k-quota-s').textContent = `pauses at ${s.pause_gib} · limit 1024 (mirrored)`;
 
@@ -249,10 +253,10 @@ function render(s) {
       <td class="num hide-s">${r.mean_hours == null ? '–' : fmt(r.mean_hours, r.mean_hours < 1 ? 2 : 1)}</td>
       <td class="num hide-s">${fmt(r.done_24h)}</td>
       <td class="num">${fmt(r.core_hours, r.core_hours < 100 ? 1 : 0)}</td>
-      <td class="num hide-s">${fmt(Math.max(r.target - r.done, 0) * hours(r) / OVERHEAD)}</td></tr>`;
+      <td class="num hide-s" title="${r.hours_source ?? 'mean of the finished runs'}">${fmt(leftHours(r))}</td></tr>`;
   }).join('') + `<tr><td class="levelname">Total</td><td></td><td class="num">${fmt(tasks)} / ${fmt(tasksTotal)}</td>
       <td class="num">${fmt(running)}</td><td class="num">${fmt(runs.reduce((a, r) => a + r.end_time, 0))}</td><td class="num hide-s"></td><td class="num hide-s"></td><td class="num hide-s">${fmt(runs.reduce((a, r) => a + r.done_24h, 0))}</td>
-      <td class="num">${fmt(s.core_hours)}</td><td class="num hide-s">${fmt(left / OVERHEAD)}</td></tr>`;
+      <td class="num">${fmt(s.core_hours)}</td><td class="num hide-s">${fmt(left)}</td></tr>`;
 
   const nodes = Object.entries(s.nodes).sort();
   el('nodes').innerHTML = nodes.length ? nodes.map(([n, c]) => `<span class="chip">${n} · ${c}</span>`).join('')
