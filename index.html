@@ -175,6 +175,7 @@
   <section>
     <h2>Problems</h2>
     <div id="failures" class="s"></div>
+    <div id="held" class="s" style="margin-top:6px"></div>
     <details style="margin-top:10px"><summary id="unsteady-sum">Cases without a steady solution</summary>
       <p class="s">Their 1 mm run stopped at the iteration cap: the flow is not steady. They are replaced from reserve
         geometries at the end, so every class keeps 300 converged cases.</p>
@@ -266,6 +267,9 @@ function render(s) {
     ? `<b>${s.failures.length} failed tasks</b> (submitted again up to three times):<div class="mono" style="margin-top:6px">` +
       s.failures.slice(-10).map(f => `${f.run} ${f.case}: ${f.reason.replace(/</g, '&lt;')}`).join('<br>') + '</div>'
     : 'No failed tasks.';
+  const held = runs.filter(r => r.held);
+  el('held').textContent = held.length ? `On hold: ${held.map(r => `${fmt(r.held)} ${r.label} runs`).join(', ')}, ` +
+    'not submitted until a decision is made (cases whose 2 mm run did not converge).' : '';
   el('unsteady-sum').textContent = `Cases without a steady solution (${s.unsteady.length})`;
   el('unsteady').textContent = s.unsteady.join(', ') || 'none';
   renderRace(s);
