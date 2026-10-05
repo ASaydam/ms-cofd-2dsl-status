@@ -420,7 +420,8 @@ function renderRace(s, force = false) {
     html += `<div class="lane"><div class="lanehead"><span><b>${levelLabel(run)}</b> · ${NICK[run] ?? ''} · ${lane.length} running</span>
       <span>${speeds.length ? `median ${fmt(median(speeds), median(speeds) < 1 ? 2 : 1)} s per iteration · ` : ''}${its.length ? `median iteration ${fmt(median(its))}` : ''}</span></div>${svg}</div>`;
   }
-  el('lanes').innerHTML = html || '<p class="s">No jobs are running right now.</p>';
+  el('lanes').innerHTML = html || `<p class="s">${s.jobs ? 'No jobs are running right now.'
+                                                          : 'The job details arrive with the next update.'}</p>`;
 
   const legend = [['ok', 'on pace'], ['warming', 'warming up'], ['flat', 'flat residual'], ['cap', 'heading for the iteration cap'],
                   ['frozen', 'log not updated'], ['pit', 'pit: starting, meshing, mapping'], ['finishing', 'past the finish: arrays, upload']];
