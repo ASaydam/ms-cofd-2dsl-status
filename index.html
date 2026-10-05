@@ -82,12 +82,13 @@
     <h2>Runs per mesh level</h2>
     <div class="scroll"><table>
       <thead><tr><th>Level</th><th style="width:38%">Progress</th><th class="num">Done</th><th class="num">Running</th>
-        <th class="num hide-s">Failed</th><th class="num hide-s">Mean h / run</th><th class="num hide-s">Last 24 h</th>
+        <th class="num">Not converged</th><th class="num hide-s">Failed</th><th class="num hide-s">Mean h / run</th><th class="num hide-s">Last 24 h</th>
         <th class="num">Core-h used</th><th class="num hide-s">Core-h left (est.)</th></tr></thead>
       <tbody id="levels"></tbody>
     </table></div>
     <div class="s" style="margin-top:8px">Green: finished · blue: running. The 0.5 and 0.25 mm meshes are run only for
-      cases whose 1 mm solution converged. Core-hours: solver time (meshing, arrays and attributes add ~5–10 %); left:
+      cases whose 1 mm solution converged. Not converged: runs that stopped at their iteration cap (on the 1 mm level
+      these cases are dropped and replaced). Core-hours: solver time (meshing, arrays and attributes add ~5–10 %); left:
       remaining runs × mean hours per run.</div>
   </section>
 
@@ -177,13 +178,14 @@ function render(s) {
     return `<tr><td class="levelname">${r.label}</td>
       <td><div class="bar"><span class="done" style="width:${pd}%"></span><span class="run" style="width:${pr}%"></span></div></td>
       <td class="num">${fmt(r.done)} / ${fmt(r.target)}</td><td class="num">${fmt(r.running)}</td>
+      <td class="num">${r.end_time ? `<span style="color:var(--warn)">${fmt(r.end_time)}</span>` : 0}${r.done ? ` <span class="s">(${fmt(100 * r.end_time / Math.max(r.done, 1), 1)} %)</span>` : ''}</td>
       <td class="num hide-s">${r.failed ? `<span class="err">${r.failed}</span>` : 0}</td>
       <td class="num hide-s">${r.mean_hours == null ? '–' : fmt(r.mean_hours, r.mean_hours < 1 ? 2 : 1)}</td>
       <td class="num hide-s">${fmt(r.done_24h)}</td>
       <td class="num">${fmt(r.core_hours, r.core_hours < 100 ? 1 : 0)}</td>
       <td class="num hide-s">${fmt(Math.max(r.target - r.done, 0) * hours(r) / OVERHEAD)}</td></tr>`;
   }).join('') + `<tr><td class="levelname">Total</td><td></td><td class="num">${fmt(tasks)} / ${fmt(tasksTotal)}</td>
-      <td class="num">${fmt(running)}</td><td class="num hide-s"></td><td class="num hide-s"></td><td class="num hide-s">${fmt(runs.reduce((a, r) => a + r.done_24h, 0))}</td>
+      <td class="num">${fmt(running)}</td><td class="num">${fmt(runs.reduce((a, r) => a + r.end_time, 0))}</td><td class="num hide-s"></td><td class="num hide-s"></td><td class="num hide-s">${fmt(runs.reduce((a, r) => a + r.done_24h, 0))}</td>
       <td class="num">${fmt(s.core_hours)}</td><td class="num hide-s">${fmt(left / OVERHEAD)}</td></tr>`;
 
   const nodes = Object.entries(s.nodes).sort();
