@@ -121,7 +121,6 @@
     <div class="card"><div class="k">Estimated finish</div><div class="v" id="k-eta">–</div><div class="s" id="k-eta-s"></div></div>
     <div class="card"><div class="k">Jobs</div><div class="v" id="k-jobs">–</div><div class="s" id="k-jobs-s"></div></div>
     <div class="card"><div class="k">Finished, last hour</div><div class="v" id="k-rate">–</div><div class="s" id="k-rate-s"></div></div>
-    <div class="card"><div class="k">No steady solution (1 mm)</div><div class="v" id="k-unsteady">–</div><div class="s" id="k-unsteady-s"></div></div>
     <div class="card"><div class="k">Disk quota</div><div class="v" id="k-quota">–</div><div class="s" id="k-quota-s"></div></div>
     <div class="card"><div class="k">Compute used</div><div class="v" id="k-compute">–</div><div class="s" id="k-compute-s"></div></div>
   </div>
@@ -235,8 +234,6 @@ function render(s) {
   const lastHour = runs.reduce((a, r) => a + r.done_1h, 0);
   el('k-rate').textContent = fmt(lastHour);
   el('k-rate-s').textContent = runs.filter(r => r.done_1h).map(r => `${r.label} ${r.done_1h}`).join(' · ') || 'none';
-  el('k-unsteady').textContent = fmt(s.unsteady.length);
-  el('k-unsteady-s').textContent = `${fmt(100 * s.unsteady.length / s.cases, 1)} % of the cases; finer meshes skipped`;
   el('k-compute').textContent = `${fmt(s.core_hours)} core-h`;
   el('k-compute-s').textContent = `solver time · ~${fmt(left / OVERHEAD)} core-h left (est.)`;
   el('k-quota').textContent = `${fmt(s.quota_gib)} GiB`;
