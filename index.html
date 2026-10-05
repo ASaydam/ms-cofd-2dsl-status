@@ -56,6 +56,54 @@
   .scroll { overflow-x: auto; }
   footer { color: var(--muted); font-size: .8rem; margin-top: 20px; }
   @media (max-width: 640px) { .hide-s { display: none; } .v { font-size: 1.3rem; } }
+
+  /* the race: one lane per mesh level, one runner per running job */
+  .racehead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 12px;
+              margin-bottom: 6px; }
+  .racehead h2 { margin: 0; }
+  .lane { margin: 14px 0 6px; }
+  .lanehead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 10px;
+              font-size: .85rem; color: var(--muted); }
+  .lanehead b { color: var(--text); font-size: .95rem; }
+  svg.track { display: block; width: 100%; margin-top: 4px; overflow: visible; }
+  svg.track .band { fill: var(--track); }
+  svg.track .tick { stroke: var(--line); stroke-width: 1; }
+  svg.track .label { fill: var(--muted); font-size: 10px; }
+  svg.track .zone { fill: var(--muted); font-size: 9px; letter-spacing: .05em; text-transform: uppercase; }
+  .runner { cursor: pointer; transition: transform 1.9s linear; }
+  .runner .g { stroke: var(--panel); stroke-width: 1; }
+  .ok .g, .g.ok { fill: var(--accent); }
+  .warming .g, .g.warming { fill: var(--accent); fill-opacity: .4; stroke: var(--accent); }
+  .flat .g, .g.flat { fill: var(--warn); }
+  .cap .g, .g.cap { fill: var(--bad); }
+  .frozen .g, .g.frozen { fill: var(--muted); }
+  .pit .g, .g.pit { fill: none; stroke: var(--muted); stroke-width: 1.3; }
+  .finishing .g, .g.finishing { fill: var(--good); }
+  .runner:hover .g, .runner.hl .g { stroke: var(--text); stroke-width: 2.2; }
+  @keyframes blink { 50% { opacity: .35; } }
+  .runner.cap .g, .runner.frozen .g { animation: blink 1.6s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { .runner { transition: none; } .runner .g { animation: none !important; } }
+  .tip { position: fixed; z-index: 10; display: none; max-width: 310px; pointer-events: none; background: var(--panel);
+         border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: .82rem;
+         box-shadow: 0 6px 20px rgba(0, 0, 0, .18); }
+  .tip .note { margin-top: 4px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .8rem; color: var(--muted); margin-top: 8px; }
+  .legend svg, .glyph { vertical-align: -2px; overflow: visible; }
+  .board { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 12px 24px;
+           margin-top: 16px; }
+  .board h3, .race h3 { font-size: .85rem; margin: 0 0 6px; }
+  .board ol { margin: 0; padding-left: 20px; font-size: .84rem; }
+  .board li { padding: 1px 0; }
+  .lrow { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 10px; }
+  .lrow .nm { flex: 0 0 auto; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .lrow .s { margin-left: auto; white-space: nowrap; }
+  .feed { font-size: .84rem; }
+  .feed .lrow { padding: 3px 0; border-bottom: 1px dashed var(--line); }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .badge { border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; font-size: .8rem; }
+  .badge.on { border-color: color-mix(in srgb, var(--good) 55%, transparent);
+              background: color-mix(in srgb, var(--good) 12%, transparent); }
+  .badge.off { border-style: dashed; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -91,6 +139,27 @@
       these cases are dropped and replaced). Core-hours: solver time (meshing, arrays and attributes add ~5–10 %); left:
       remaining runs × mean hours per run.</div>
   </section>
+
+  <section class="race">
+    <div class="racehead"><h2>The race to 10⁻⁶</h2><div class="s" id="race-sum"></div></div>
+    <div class="s">Every running job is a runner, drawn as its obstacle. A runner's position is how far the solver
+      residual has fallen toward the 10⁻⁶ finish line (log scale). Each lane's axis starts at its slowest runner, so
+      it zooms in where the runners are. Between updates, runners keep moving at their measured pace. Hover or tap
+      a runner for details.</div>
+    <div id="lanes"></div>
+    <div class="legend" id="legend"></div>
+    <div class="board">
+      <div><h3>Closest to the finish</h3><ol id="b-close"></ol></div>
+      <div><h3>Fastest pace on each mesh</h3><ol id="b-fast"></ol></div>
+      <div><h3>Longest on the road</h3><ol id="b-long"></ol></div>
+      <div><h3>Needs attention</h3><ol id="b-watch"></ol></div>
+    </div>
+    <div class="board">
+      <div><h3>Finish line</h3><div class="feed" id="feed"></div></div>
+      <div><h3>Milestones</h3><div class="badges" id="badges"></div></div>
+    </div>
+  </section>
+  <div class="tip" id="tip"></div>
 
   <section>
     <h2>Progress over time</h2>
@@ -198,6 +267,7 @@ function render(s) {
     : 'No failed tasks.';
   el('unsteady-sum').textContent = `Cases without a steady solution (${s.unsteady.length})`;
   el('unsteady').textContent = s.unsteady.join(', ') || 'none';
+  renderRace(s);
 }
 
 function renderHistory(text, status) {
@@ -205,6 +275,7 @@ function renderHistory(text, status) {
   if (lines.length < 2) return;
   const head = lines[0].split(',');
   const rows = lines.slice(1).map(l => l.split(','));
+  renderBadges(head, rows, status);
   const x = rows.map(r => new Date(r[head.indexOf('time')]));
   const css = getComputedStyle(document.documentElement);
   const datasets = status.runs.map((run, i) => {
@@ -226,6 +297,260 @@ function renderHistory(text, status) {
                                     label: item => `${item.dataset.label}: ${fmt(item.parsed.y, 1)} %`}}}};
   if (chart) { chart.data.datasets = datasets; chart.options = options; chart.update(); }
   else if (window.Chart) chart = new Chart(el('chart'), {type: 'line', data: {datasets}, options});
+}
+
+// ------------------------------------------------------------------------------------------------ the race
+// pace of a job (hpc/status.py): css class, legend text, note in the details
+const PACE = {
+  'ok': ['ok', 'on pace', ''],
+  'warming up': ['warming', 'warming up', 'Warming up: a run started from the 1 mm solution first sees its residual rise for ~1000 iterations.'],
+  'flat': ['flat', 'flat residual', 'The residual has stopped falling.'],
+  'cap': ['cap', 'heading for the iteration cap', 'At this pace it reaches the iteration cap before 10⁻⁶.'],
+  'frozen': ['frozen', 'log not updated', 'The solver log has not been written for over 20 minutes.'],
+  'starting': ['pit', 'starting', 'Starting: preparing the container and the case.'],
+  'meshing': ['pit', 'meshing', 'Meshing with gmsh.'],
+  'mapping': ['pit', 'mapping', 'Mapping the 1 mm solution onto the finer mesh.'],
+  'finishing': ['finishing', 'past the finish', 'Solver done: arrays, attributes, archive and upload.'],
+};
+const NICK = {'0.25x': 'sprint', 'base_fo': 'sprint', 'base_lu': 'middle distance', '4x': 'long distance', '16x': 'marathon'};
+const SIZE_R = {smaller: 4.2, normal: 5.2, larger: 6.2};
+const SUP = {'-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹'};
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const race = {status: null, generated: null, width: 0, lanes: {}, byJob: new Map()};
+
+const pow10 = e => e === 0 ? '1' : '10' + String(e).split('').map(c => SUP[c]).join('');
+function sci(x) {
+  if (x == null || !(x > 0)) return '–';
+  const e = Math.floor(Math.log10(x));
+  return `${(x / 10 ** e).toFixed(1)}·${pow10(e)}`;
+}
+function duration(s) {
+  if (s == null) return '–';
+  const m = Math.round(s / 60);
+  return m < 60 ? `${m} min` : `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')} min`;
+}
+const levelLabel = run => race.status?.runs.find(r => r.run === run)?.label ?? run;
+const paceClass = j => j.stage === 'finishing' ? 'finishing' : (j.residual == null ? 'pit' : (PACE[j.pace]?.[0] ?? 'ok'));
+
+// the obstacle of a case (<size>_<geometry>_<number>) as an SVG shape centred on 0, 0
+function glyph(name, r) {
+  const geometry = name.split('_').slice(1, -1).join('_');
+  switch (geometry) {
+    case 'rectangle': return `<rect class="g" x="${-r}" y="${-0.72 * r}" width="${2 * r}" height="${1.44 * r}"/>`;
+    case 'diamond': return `<polygon class="g" points="0,${-1.25 * r} ${1.25 * r},0 0,${1.25 * r} ${-1.25 * r},0"/>`;
+    case 'left_triangle': return `<polygon class="g" points="${-1.2 * r},0 ${r},${-r} ${r},${r}"/>`;
+    case 'right_triangle': return `<polygon class="g" points="${1.2 * r},0 ${-r},${-r} ${-r},${r}"/>`;
+    default: return `<circle class="g" r="${r}"/>`;
+  }
+}
+const icon = (name, cls, r = 4.6) =>
+  `<svg class="glyph" width="14" height="14" viewBox="-7 -7 14 14"><g class="${cls}">${glyph(name, r)}</g></svg>`;
+
+function renderRace(s, force = false) {
+  const width = el('lanes').clientWidth || 800;
+  if (!force && s.generated === race.generated && width === race.width) return;   // same data: keep the runners moving
+  setTimeout(tickRace, 50);                                                       // catch up with the time since the update
+  Object.assign(race, {status: s, generated: s.generated, width, lanes: {}, byJob: new Map()});
+  const jobs = s.jobs || [];
+  jobs.forEach(j => race.byJob.set(j.job, j));
+
+  const counts = {};
+  jobs.forEach(j => { counts[j.pace] = (counts[j.pace] || 0) + 1; });
+  el('race-sum').textContent = jobs.length
+    ? `${jobs.length} runners · ` + Object.entries(counts).sort((a, b) => b[1] - a[1])
+        .map(([p, n]) => `${n} ${PACE[p]?.[1] ?? p}`).join(' · ')
+    : 'no jobs running';
+
+  const small = width < 560, k = small ? 0.8 : 1;
+  const PIT = small ? 46 : 72, FIN = small ? 40 : 60, ROW = small ? 12 : 15, TOP = 16, MAXROWS = small ? 18 : 14;
+  const X0 = PIT, X1 = width - FIN;
+  let html = '';
+  for (const run of s.runs.map(r => r.run).filter(run => jobs.some(j => j.run === run))) {
+    const lane = jobs.filter(j => j.run === run);
+    const solving = lane.filter(j => j.stage === 'solving' && j.residual != null);
+    const pit = lane.filter(j => j.stage !== 'finishing' && !(j.stage === 'solving' && j.residual != null));
+    const fin = lane.filter(j => j.stage === 'finishing');
+
+    // the axis starts at the decade above the slowest runner (at most 1, at least one decade before the finish)
+    const s0 = Math.max(Math.min(Math.ceil(Math.log10(Math.max(...solving.map(j => j.residual), 1e-5))), 0), -5);
+    const xOf = res => X0 + (X1 - X0) * Math.min(Math.max((s0 - Math.log10(res)) / (s0 + 6), 0), 1);
+    race.lanes[run] = {xOf};
+
+    // rows: runners from left to right, each in the first row where it does not overlap the one before it
+    const items = solving.map(j => ({j, x: xOf(j.residual)})).sort((a, b) => a.x - b.x);
+    const ends = [], gap = 2 * SIZE_R.larger * k + 1.5;
+    for (const it of items) {
+      let row = ends.findIndex(e => e <= it.x - gap);
+      if (row < 0) row = ends.length < MAXROWS ? ends.push(-1e9) - 1 : ends.indexOf(Math.min(...ends));
+      ends[row] = it.x;
+      it.row = row;
+    }
+    const grid = (list, left, space) => {
+      const cols = Math.max(1, Math.floor((space - 10) / (13 * k)));
+      return list.map((j, i) => ({j, x: left + 9 + (i % cols) * 13 * k, row: Math.floor(i / cols)}));
+    };
+    const all = [...items, ...grid(pit, 0, PIT), ...grid(fin, X1 + 6, FIN)];
+    const rows = Math.max(1, ...all.map(it => it.row + 1));
+    const H = TOP + rows * ROW + 6;
+
+    let svg = `<svg class="track" height="${H}" viewBox="0 0 ${width} ${H}" role="img" aria-label="${levelLabel(run)} runners">
+      <defs><pattern id="chk-${run.replace('.', '')}" width="6" height="6" patternUnits="userSpaceOnUse">
+        <rect width="6" height="6" style="fill:var(--panel)"/><rect width="3" height="3" style="fill:var(--text)"/>
+        <rect x="3" y="3" width="3" height="3" style="fill:var(--text)"/></pattern></defs>
+      <rect class="band" x="${X0}" y="${TOP - 2}" width="${X1 - X0}" height="${H - TOP + 2}" rx="4"/>
+      <text class="zone" x="2" y="${TOP - 5}">pit</text>`;
+    for (let e = s0; e >= -6; e--) {
+      const x = xOf(10 ** e);
+      if (e > -6) svg += `<line class="tick" x1="${x}" x2="${x}" y1="${TOP - 2}" y2="${H}"/>`;
+      svg += `<text class="label" x="${x}" y="${TOP - 5}" text-anchor="${e === s0 ? 'start' : 'middle'}">${pow10(e)}</text>`;
+    }
+    svg += `<rect x="${X1 - 3}" y="${TOP - 2}" width="6" height="${H - TOP + 2}" fill="url(#chk-${run.replace('.', '')})"/>`;
+    for (const it of all) {
+      const j = it.j, y = TOP + 2 + it.row * ROW + ROW / 2;
+      const size = SIZE_R[j.case.split('_')[0]] ?? SIZE_R.normal;
+      const moving = j.stage === 'solving' && (j.pace === 'ok' || j.pace === 'cap') && j.decades_per_1000 < 0 && j.s_per_iteration > 0;
+      svg += `<g class="runner ${paceClass(j)}" data-job="${j.job}" data-y="${y}"${moving ? ' data-move="1"' : ''}
+                 style="transform: translate(${it.x}px, ${y}px)">${glyph(j.case, size * k)}</g>`;
+    }
+    svg += '</svg>';
+
+    const speeds = solving.map(j => j.s_per_iteration).filter(v => v != null).sort((a, b) => a - b);
+    const its = solving.map(j => j.iteration).sort((a, b) => a - b);
+    const median = v => v.length ? v[Math.floor(v.length / 2)] : null;
+    html += `<div class="lane"><div class="lanehead"><span><b>${levelLabel(run)}</b> · ${NICK[run] ?? ''} · ${lane.length} running</span>
+      <span>${speeds.length ? `median ${fmt(median(speeds), median(speeds) < 1 ? 2 : 1)} s per iteration · ` : ''}${its.length ? `median iteration ${fmt(median(its))}` : ''}</span></div>${svg}</div>`;
+  }
+  el('lanes').innerHTML = html || '<p class="s">No jobs are running right now.</p>';
+
+  const legend = [['ok', 'on pace'], ['warming', 'warming up'], ['flat', 'flat residual'], ['cap', 'heading for the iteration cap'],
+                  ['frozen', 'log not updated'], ['pit', 'pit: starting, meshing, mapping'], ['finishing', 'past the finish: arrays, upload']];
+  const shapes = ['x_circle_1', 'x_rectangle_1', 'x_diamond_1', 'x_left_triangle_1', 'x_right_triangle_1'];
+  el('legend').innerHTML = legend.map(([c, t]) => `<span>${icon('x_circle_1', c, 4)} ${t}</span>`).join('') +
+    `<span>${shapes.map(n => icon(n, 'ok', 4)).join('')} obstacle shape, size = size class</span>`;
+
+  // leader boards
+  const li = (j, right) => `<li data-job="${j.job}"><span class="lrow"><span class="nm">${icon(j.case, paceClass(j))} ${j.case}</span>
+    <span class="s">${right}</span></span></li>`;
+  const onTrack = jobs.filter(j => j.stage === 'solving' && j.residual != null);
+  el('b-close').innerHTML = onTrack.slice().sort((a, b) => a.residual - b.residual).slice(0, 5)
+    .map(j => li(j, `${sci(j.residual)} · ${levelLabel(j.run)}`)).join('') || '<li class="s">–</li>';
+  const perHour = j => -j.decades_per_1000 / 1000 * 3600 / j.s_per_iteration;
+  const fastest = s.runs.map(r => onTrack.filter(j => j.run === r.run && j.decades_per_1000 < 0 && j.s_per_iteration > 0)
+    .sort((a, b) => perHour(b) - perHour(a))[0]).filter(Boolean);
+  el('b-fast').innerHTML = fastest.map(j => li(j, `${fmt(perHour(j), perHour(j) < 10 ? 2 : 1)} decades/h · ${levelLabel(j.run)}`)).join('')
+    || '<li class="s">–</li>';
+  el('b-long').innerHTML = jobs.slice().sort((a, b) => (b.elapsed_s ?? 0) - (a.elapsed_s ?? 0)).slice(0, 5)
+    .map(j => li(j, `${duration(j.elapsed_s)} · ${levelLabel(j.run)}`)).join('') || '<li class="s">–</li>';
+  const watch = jobs.filter(j => ['flat', 'cap', 'frozen'].includes(j.pace));
+  el('b-watch').innerHTML = watch.slice(0, 8).map(j => li(j, `${PACE[j.pace][1]} · ${levelLabel(j.run)}`)).join('')
+    + (watch.length > 8 ? `<li class="s">and ${watch.length - 8} more</li>` : '')
+    || '<li class="s" style="list-style:none;margin-left:-20px">Every runner is on pace ✓</li>';
+
+  el('feed').innerHTML = (s.finished || []).slice(0, 10).map(f => {
+    const ok = f.status === 'converged';
+    const t = new Date(f.finished).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    return `<div class="lrow"><span class="nm">${ok ? '🏁' : '⛽'} <span class="s">${t}</span> ${icon(f.case, ok ? 'finishing' : 'cap')} ${f.case}</span>
+      <span class="s">${levelLabel(f.run)} · ${ok ? `${fmt(f.iterations)} iterations` : `cap at ${fmt(f.iterations)}`} · ${duration(f.hours * 3600)}</span></div>`;
+  }).join('') || '<span class="s">Nothing yet.</span>';
+}
+
+function tipHtml(j) {
+  const generated = new Date(race.status.generated).getTime();
+  const out = [`<b>${j.case}</b> <span class="s">· ${levelLabel(j.run)} · job ${j.job} on ${j.node}</span>`];
+  if (j.residual != null) {
+    out.push(`Residual <b>${sci(j.residual)}</b> <span class="s">(Ux ${sci(j.residuals[0])} · Uy ${sci(j.residuals[1])} · p ${sci(j.residuals[2])})</span>`);
+    out.push(`Iteration ${fmt(j.iteration)}${j.cap ? ` of ${fmt(j.cap)} (cap)` : ''}`);
+  } else {
+    out.push(`Stage: ${j.stage}`);
+  }
+  if (j.decades_per_1000 != null) {
+    const d = j.decades_per_1000;
+    out.push(`${d < 0 ? 'Falls' : 'Rises'} ${fmt(Math.abs(d), 2)} decades per 1000 iterations · ${fmt(j.s_per_iteration, 2)} s per iteration`);
+  }
+  if (j.eta_s != null) {
+    const at = new Date(generated + j.eta_s * 1000);
+    const when = j.eta_s > 12 * 3600 ? at.toLocaleString([], {weekday: 'short', hour: '2-digit', minute: '2-digit'})
+                                     : at.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    out.push(`Reaches 10⁻⁶ in ~${duration(j.eta_s)} <span class="s">(≈ ${when})</span>`);
+  }
+  out.push(`Job time ${duration(j.elapsed_s)}${j.limit_s ? ` of ${duration(j.limit_s)}` : ''}`);
+  const notes = [];
+  if (PACE[j.pace]?.[2]) notes.push(PACE[j.pace][2]);
+  if (j.eta_s != null && j.limit_s && j.elapsed_s + j.eta_s > j.limit_s)
+    notes.push('It reaches the job time limit first and continues in a new job from its last step.');
+  return out.join('<br>') + notes.map(n => `<div class="note s">${n}</div>`).join('');
+}
+
+function showTip(id, ev) {
+  const j = race.byJob.get(id);
+  if (!j) return;
+  const tip = el('tip');
+  tip.innerHTML = tipHtml(j);
+  tip.style.display = 'block';
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = ev.clientX + 14, y = ev.clientY + 14;
+  if (x + w > innerWidth - 8) x = ev.clientX - w - 14;
+  if (y + h > innerHeight - 8) y = ev.clientY - h - 14;
+  tip.style.left = `${Math.max(8, x)}px`;
+  tip.style.top = `${Math.max(8, y)}px`;
+}
+const hideTip = () => { el('tip').style.display = 'none'; };
+for (const type of ['pointermove', 'pointerdown']) {
+  el('lanes').addEventListener(type, ev => {
+    const runner = ev.target.closest('.runner');
+    runner ? showTip(runner.dataset.job, ev) : hideTip();
+  });
+}
+el('lanes').addEventListener('pointerleave', ev => { if (ev.pointerType === 'mouse') hideTip(); });
+document.addEventListener('pointerdown', ev => { if (!ev.target.closest('.runner')) hideTip(); });
+document.addEventListener('pointerover', ev => {
+  const item = ev.target.closest('.board li[data-job]');
+  document.querySelectorAll('.runner.hl').forEach(r => r.classList.remove('hl'));
+  if (item) document.querySelector(`.runner[data-job="${item.dataset.job}"]`)?.classList.add('hl');
+});
+
+// between two updates a runner moves on at its measured pace (at most 20 minutes ahead, never over the line); with
+// reduced motion it steps every 30 s without sliding
+function tickRace() {
+  if (!race.status) return;
+  const dt = Math.min((Date.now() - new Date(race.status.generated).getTime()) / 1000, 1200);
+  if (!(dt > 0)) return;
+  document.querySelectorAll('#lanes .runner[data-move]').forEach(g => {
+    const j = race.byJob.get(g.dataset.job);
+    const log = Math.max(Math.log10(j.residual) + j.decades_per_1000 / 1000 * dt / j.s_per_iteration, -5.98);
+    g.style.transform = `translate(${race.lanes[j.run].xOf(10 ** log)}px, ${g.dataset.y}px)`;
+  });
+}
+setInterval(tickRace, reduceMotion ? 30000 : 2000);
+let resizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { if (race.status) { renderRace(race.status, true); tickRace(); } }, 200);
+});
+
+// milestones: unlocked from history.csv (the time of the first update past each one), the next three still locked
+function renderBadges(head, rows, s) {
+  const time = head.indexOf('time');
+  const cols = s.runs.map(r => head.indexOf('done_' + r.run));
+  const total = row => cols.reduce((a, c) => a + (c < 0 ? 0 : Number(row[c]) || 0), 0);
+  const target = s.runs.reduce((a, r) => a + r.target, 0), done = s.runs.reduce((a, r) => a + r.done, 0);
+  const badges = [];
+  for (const n of [100, 1000, 2500, 5000, 7500, 10000, 15000, 20000].filter(n => n < target))
+    badges.push({name: `${fmt(n)} runs`, test: row => total(row) >= n, now: done, goal: n});
+  s.runs.forEach((r, i) => {
+    badges.push({name: `First ${r.label} run`, test: row => cols[i] >= 0 && Number(row[cols[i]]) >= 1, now: r.done, goal: 1});
+    badges.push({name: `All ${r.label} runs`, test: row => cols[i] >= 0 && Number(row[cols[i]]) >= r.target, now: r.done, goal: r.target});
+  });
+  badges.push({name: 'Every run of the dataset', test: row => total(row) >= target, now: done, goal: target});
+  for (const b of badges) {
+    b.at = rows.findIndex(b.test);
+    b.on = b.at >= 0 || b.now >= b.goal;
+  }
+  const on = badges.filter(b => b.on).sort((a, b) => (a.at < 0 ? 1e9 : a.at) - (b.at < 0 ? 1e9 : b.at));
+  const next = badges.filter(b => !b.on).sort((a, b) => b.now / b.goal - a.now / a.goal).slice(0, 3);
+  el('badges').innerHTML = on.map(b => `<span class="badge on">🏅 ${b.name}${b.at > 0
+      ? ` <span class="s">· ${new Date(rows[b.at][time]).toLocaleString([], {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</span>` : ''}</span>`).join('') +
+    next.map(b => `<span class="badge off">🔒 ${b.name} · ${fmt(b.now)} / ${fmt(b.goal)}</span>`).join('');
 }
 
 async function refresh() {
