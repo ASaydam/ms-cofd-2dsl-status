@@ -134,8 +134,9 @@
       <tbody id="levels"></tbody>
     </table></div>
     <div class="s" style="margin-top:8px">Green: finished · blue: running. The 0.5 and 0.25 mm meshes are run only for
-      cases whose 1 mm solution converged. Not converged: runs that stopped at their iteration cap (on the 1 mm level
-      these cases are dropped and replaced). Core-hours: solver time (meshing, arrays and attributes add ~5–10 %). Left:
+      cases whose 1 mm solution converged. Not converged: cases of the dataset whose latest run stopped at its
+      iteration cap; dropped and replaced cases, and runs that converged when run again, are listed under Problems.
+      Core-hours: solver time (meshing, arrays and attributes add ~5–10 %). Left:
       estimated for every remaining case from its blockage ratio, since the solver time grows with it (0.25 mm: ~2.5 h
       at blockage 0.12, ~12 h at 0.40). The fit comes from the pilot until half of a level is done, then from the
       finished runs; a plain mean would be too low because the fast runs finish first.</div>
@@ -175,6 +176,8 @@
   <section>
     <h2>Problems</h2>
     <div id="failures" class="s"></div>
+    <div id="replaced" class="s" style="margin-top:6px"></div>
+    <div id="reruns" class="s" style="margin-top:6px"></div>
     <div id="held" class="s" style="margin-top:6px"></div>
     <details style="margin-top:10px"><summary id="unsteady-sum">Cases without a steady solution</summary>
       <p class="s">Their 1 mm run stopped at the iteration cap: the flow is not steady. They are replaced from reserve
@@ -267,6 +270,15 @@ function render(s) {
     ? `<b>${s.failures.length} failed tasks</b> (submitted again up to three times):<div class="mono" style="margin-top:6px">` +
       s.failures.slice(-10).map(f => `${f.run} ${f.case}: ${f.reason.replace(/</g, '&lt;')}`).join('<br>') + '</div>'
     : 'No failed tasks.';
+  el('replaced').innerHTML = s.unsteady.length
+    ? `<b>Not converged and replaced:</b> ${fmt(s.unsteady.length)} cases whose 1 mm run stopped at its iteration cap ` +
+      `(no steady solution) were dropped with all their runs; ${fmt(s.reserves)} reserve geometries of the same size ` +
+      'and shape took their place.' : '';
+  const again = runs.filter(r => r.rerun_converged);
+  el('reruns').innerHTML = again.length
+    ? `<b>Converged when run again:</b> ${again.map(r => `${fmt(r.rerun_converged)} ${r.label}`).join(', ')} runs ` +
+      'stopped at their iteration cap first and converged with a higher cap or other solver settings (the first ' +
+      'runs are kept).' : '';
   const held = runs.filter(r => r.held);
   el('held').textContent = held.length ? `On hold: ${held.map(r => `${fmt(r.held)} ${r.label} runs`).join(', ')}, ` +
     'not submitted until a decision is made (cases whose 2 mm run did not converge).' : '';
