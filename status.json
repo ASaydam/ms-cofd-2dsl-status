@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-16T11:13:16+03:00",
+ "generated": "2026-10-16T13:13:23+03:00",
  "cases": 4500,
  "runs": [
   {
@@ -77,8 +77,8 @@
    "core_hours": 1889.4,
    "mean_hours": 0.4199,
    "done_1h": 0,
-   "done_6h": 497,
-   "done_24h": 4346,
+   "done_6h": 33,
+   "done_24h": 4086,
    "hours_left": 0.2,
    "hours_source": "fit to the finished runs"
   },
@@ -86,20 +86,20 @@
    "run": "16x",
    "label": "0.25 mm",
    "target": 4500,
-   "done": 4489,
-   "running": 12,
+   "done": 4490,
+   "running": 11,
    "pending": 0,
    "submitted": 0,
-   "failed": 1,
+   "failed": 0,
    "held": 0,
    "end_time": 1,
    "rerun_converged": 72,
-   "core_hours": 35013.98,
-   "mean_hours": 7.6735,
+   "core_hours": 35063.64,
+   "mean_hours": 7.6827,
    "done_1h": 1,
-   "done_6h": 7,
-   "done_24h": 86,
-   "hours_left": 56.5,
+   "done_6h": 6,
+   "done_24h": 56,
+   "hours_left": 45.6,
    "hours_source": "fit to the finished runs"
   }
  ],
@@ -126,39 +126,61 @@
  "reserves": 18,
  "window": "asaydam_oct26",
  "queue": {
-  "running": 12,
+  "running": 11,
   "pending": 0
  },
- "core_hours": 37270.7,
- "quota_gib": 144.6,
+ "core_hours": 37320.4,
+ "quota_gib": 143.7,
  "backlog_gib": 0.0,
  "pause_gib": 600,
  "nodes": {
-  "be01": 2,
-  "be09": 3,
-  "be02": 1,
-  "da02": 4,
-  "da04": 1,
-  "be07": 1
+  "be09": 4,
+  "be02": 2,
+  "be01": 1,
+  "da02": 3,
+  "da04": 1
  },
  "jobs": [
   {
-   "job": "3194458",
+   "job": "3194594",
    "run": "16x",
-   "case": "larger_right_triangle_0275",
-   "node": "be01",
-   "elapsed_s": 45,
+   "case": "larger_circle_0279",
+   "node": "be09",
+   "elapsed_s": 46,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 30008,
+   "iteration": 30108,
    "residuals": [
-    4.8797e-07,
-    1.9162e-06,
-    7.26486e-05
+    1.22768e-06,
+    4.2849e-06,
+    7.04974e-05
    ],
-   "residual": 7.26486e-05,
+   "residual": 7.04974e-05,
    "cap": 45000,
+   "pace": "ok"
+  },
+  {
+   "job": "3194460",
+   "run": "16x",
+   "case": "normal_left_triangle_0271",
+   "node": "be02",
+   "elapsed_s": 7159,
+   "limit_s": 86400,
+   "stage": "solving",
+   "log_age_s": 0,
+   "iteration": 31836,
+   "residuals": [
+    4.78843e-07,
+    1.71615e-06,
+    1.1957e-07
+   ],
+   "residual": 1.71615e-06,
+   "cap": 45000,
+   "s_per_iteration": 3.932,
+   "decades_per_1000": -0.0654,
+   "eta_iterations": 3587,
+   "eta_s": 14104,
    "pace": "ok"
   },
   {
@@ -166,45 +188,43 @@
    "run": "16x",
    "case": "normal_left_triangle_0314",
    "node": "be09",
-   "elapsed_s": 10565,
+   "elapsed_s": 17773,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 18462,
+   "iteration": 20174,
    "residuals": [
-    3.71913e-07,
-    1.36711e-06,
-    8.48067e-08
+    3.05403e-07,
+    1.10878e-06,
+    6.53798e-08
    ],
-   "residual": 1.36711e-06,
+   "residual": 1.10878e-06,
    "cap": 45000,
-   "s_per_iteration": 4.126,
-   "decades_per_1000": -0.1203,
-   "eta_iterations": 1129,
-   "eta_s": 4657,
-   "pace": "ok"
+   "s_per_iteration": 4.113,
+   "decades_per_1000": 0.031,
+   "pace": "flat"
   },
   {
    "job": "3194162",
    "run": "16x",
    "case": "normal_left_triangle_0313",
    "node": "be09",
-   "elapsed_s": 10971,
+   "elapsed_s": 18179,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 17048,
+   "iteration": 18659,
    "residuals": [
-    9.58841e-07,
-    3.58463e-06,
-    2.24357e-07
+    7.93153e-07,
+    2.86627e-06,
+    1.95424e-07
    ],
-   "residual": 3.58463e-06,
+   "residual": 2.86627e-06,
    "cap": 45000,
-   "s_per_iteration": 4.369,
-   "decades_per_1000": -0.0604,
-   "eta_iterations": 9187,
-   "eta_s": 40136,
+   "s_per_iteration": 4.481,
+   "decades_per_1000": -0.0608,
+   "eta_iterations": 7516,
+   "eta_s": 33680,
    "pace": "ok"
   },
   {
@@ -212,22 +232,22 @@
    "run": "16x",
    "case": "larger_left_triangle_0301",
    "node": "be02",
-   "elapsed_s": 13472,
+   "elapsed_s": 20680,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 17517,
+   "iteration": 19441,
    "residuals": [
-    1.17824e-06,
-    4.22056e-06,
-    2.55045e-07
+    9.52399e-07,
+    3.36705e-06,
+    2.12116e-07
    ],
-   "residual": 4.22056e-06,
+   "residual": 3.36705e-06,
    "cap": 45000,
-   "s_per_iteration": 3.832,
-   "decades_per_1000": -0.0111,
-   "eta_iterations": 56350,
-   "eta_s": 215935,
+   "s_per_iteration": 3.554,
+   "decades_per_1000": -0.0223,
+   "eta_iterations": 23629,
+   "eta_s": 83977,
    "pace": "flat"
   },
   {
@@ -235,45 +255,45 @@
    "run": "16x",
    "case": "larger_left_triangle_0296",
    "node": "da02",
-   "elapsed_s": 28127,
+   "elapsed_s": 35335,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 21808,
+   "iteration": 24041,
    "residuals": [
-    5.70178e-07,
-    2.06442e-06,
-    1.47347e-07
+    4.47125e-07,
+    1.64836e-06,
+    1.00956e-07
    ],
-   "residual": 2.06442e-06,
+   "residual": 1.64836e-06,
    "cap": 45000,
-   "s_per_iteration": 3.212,
-   "decades_per_1000": -0.0597,
-   "eta_iterations": 5277,
-   "eta_s": 16950,
-   "pace": "ok"
+   "s_per_iteration": 3.188,
+   "decades_per_1000": -0.0303,
+   "eta_iterations": 7157,
+   "eta_s": 22817,
+   "pace": "flat"
   },
   {
    "job": "3192422",
    "run": "16x",
    "case": "larger_right_triangle_0293",
    "node": "da02",
-   "elapsed_s": 37769,
+   "elapsed_s": 44977,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 21589,
+   "iteration": 23653,
    "residuals": [
-    5.0335e-07,
-    1.72101e-06,
-    1.22711e-07
+    3.57481e-07,
+    1.2228e-06,
+    8.75033e-08
    ],
-   "residual": 1.72101e-06,
+   "residual": 1.2228e-06,
    "cap": 45000,
-   "s_per_iteration": 3.519,
-   "decades_per_1000": -0.0365,
-   "eta_iterations": 6462,
-   "eta_s": 22740,
+   "s_per_iteration": 3.175,
+   "decades_per_1000": -0.0437,
+   "eta_iterations": 1998,
+   "eta_s": 6345,
    "pace": "flat"
   },
   {
@@ -281,22 +301,22 @@
    "run": "16x",
    "case": "normal_left_triangle_0288",
    "node": "be09",
-   "elapsed_s": 52246,
+   "elapsed_s": 59454,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 23802,
+   "iteration": 25405,
    "residuals": [
-    1.01158e-06,
-    3.50823e-06,
-    2.46301e-07
+    8.67831e-07,
+    3.01383e-06,
+    2.05893e-07
    ],
-   "residual": 3.50823e-06,
+   "residual": 3.01383e-06,
    "cap": 45000,
-   "s_per_iteration": 4.392,
-   "decades_per_1000": -0.0336,
-   "eta_iterations": 16215,
-   "eta_s": 71218,
+   "s_per_iteration": 4.544,
+   "decades_per_1000": -0.0495,
+   "eta_iterations": 9681,
+   "eta_s": 43991,
    "pace": "flat"
   },
   {
@@ -304,22 +324,22 @@
    "run": "16x",
    "case": "normal_circle_0284",
    "node": "da02",
-   "elapsed_s": 66128,
+   "elapsed_s": 73336,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 27764,
+   "iteration": 29780,
    "residuals": [
-    3.38712e-07,
-    1.2128e-06,
-    9.90679e-08
+    2.82889e-07,
+    1.01476e-06,
+    8.44124e-08
    ],
-   "residual": 1.2128e-06,
+   "residual": 1.01476e-06,
    "cap": 45000,
-   "s_per_iteration": 3.624,
-   "decades_per_1000": -0.0235,
-   "eta_iterations": 3559,
-   "eta_s": 12897,
+   "s_per_iteration": 3.233,
+   "decades_per_1000": -0.045,
+   "eta_iterations": 142,
+   "eta_s": 458,
    "pace": "flat"
   },
   {
@@ -327,49 +347,34 @@
    "run": "16x",
    "case": "normal_right_triangle_0282",
    "node": "da04",
-   "elapsed_s": 68911,
+   "elapsed_s": 76119,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 28215,
+   "iteration": 30314,
    "residuals": [
-    5.38355e-07,
-    2.06311e-06,
-    1.19431e-07
+    4.25548e-07,
+    1.62314e-06,
+    1.12799e-07
    ],
-   "residual": 2.06311e-06,
+   "residual": 1.62314e-06,
    "cap": 45000,
-   "s_per_iteration": 3.407,
-   "decades_per_1000": -0.0198,
-   "eta_iterations": 15911,
-   "eta_s": 54208,
-   "pace": "flat"
-  },
-  {
-   "job": "3189660",
-   "run": "16x",
-   "case": "larger_circle_0279",
-   "node": "da02",
-   "elapsed_s": 80259,
-   "limit_s": 86400,
-   "stage": "solving",
-   "log_age_s": 0,
-   "iteration": 28456,
-   "residuals": [
-    1.16473e-06,
-    3.94619e-06,
-    2.92086e-07
-   ],
-   "residual": 3.94619e-06,
-   "cap": 45000,
-   "s_per_iteration": 3.933,
-   "decades_per_1000": -0.1009,
-   "eta_iterations": 5908,
-   "eta_s": 23235,
+   "s_per_iteration": 3.245,
+   "decades_per_1000": -0.058,
+   "eta_iterations": 3629,
+   "eta_s": 11777,
    "pace": "ok"
   }
  ],
  "finished": [
+  {
+   "run": "16x",
+   "case": "larger_right_triangle_0275",
+   "status": "converged",
+   "iterations": 31943,
+   "hours": 49.667,
+   "finished": "2026-10-16T13:10:18+03:00"
+  },
   {
    "run": "16x",
    "case": "smaller_rectangle_0280",
@@ -481,14 +486,6 @@
    "iterations": 10000,
    "hours": 2.679,
    "finished": "2026-10-16T08:05:06+03:00"
-  },
-  {
-   "run": "4x",
-   "case": "normal_left_triangle_0271",
-   "status": "end_time",
-   "iterations": 10000,
-   "hours": 3.066,
-   "finished": "2026-10-16T08:04:56+03:00"
   }
  ],
  "failures": [
@@ -496,11 +493,6 @@
    "run": "4x",
    "case": "normal_diamond_0182",
    "reason": "RuntimeError: no base_lu solution of normal_diamond_0182 in /scratch/users/asaydam21/hpc_run/ms-cofd-2dsl/seeds/normal_diamond_0182"
-  },
-  {
-   "run": "16x",
-   "case": "normal_left_triangle_0271",
-   "reason": "RuntimeError: foamDictionary system/controlDict -entry startFrom -set latestTime failed with exit code 1, see log.foamDictionary"
   }
  ],
  "interrupted": 0
