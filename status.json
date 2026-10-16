@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-16T22:15:17+03:00",
+ "generated": "2026-10-17T01:19:23+03:00",
  "set": "",
  "cases": 4500,
  "runs": [
@@ -78,8 +78,8 @@
    "core_hours": 1938.46,
    "mean_hours": 0.4293,
    "done_1h": 0,
-   "done_6h": 2,
-   "done_24h": 2234,
+   "done_6h": 0,
+   "done_24h": 1514,
    "hours_left": 0.0,
    "hours_source": "fit to the finished runs"
   },
@@ -87,20 +87,20 @@
    "run": "16x",
    "label": "0.25 mm",
    "target": 4500,
-   "done": 4497,
-   "running": 4,
+   "done": 4498,
+   "running": 3,
    "pending": 0,
    "submitted": 0,
    "failed": 0,
    "held": 0,
    "end_time": 0,
    "rerun_converged": 73,
-   "core_hours": 35438.75,
-   "mean_hours": 7.7513,
+   "core_hours": 35480.28,
+   "mean_hours": 7.7586,
    "done_1h": 1,
-   "done_6h": 5,
-   "done_24h": 22,
-   "hours_left": 15.3,
+   "done_6h": 3,
+   "done_24h": 20,
+   "hours_left": 9.6,
    "hours_source": "fit to the finished runs"
   }
  ],
@@ -127,16 +127,16 @@
  "reserves": 18,
  "window": "asaydam_oct26",
  "queue": {
-  "running": 4,
+  "running": 3,
   "pending": 0
  },
- "core_hours": 37744.6,
- "quota_gib": 144.8,
+ "core_hours": 37786.1,
+ "quota_gib": 140.7,
  "backlog_gib": 0.0,
  "pause_gib": 600,
  "nodes": {
   "be02": 2,
-  "be09": 2
+  "be09": 1
  },
  "jobs": [
   {
@@ -144,19 +144,23 @@
    "run": "16x",
    "case": "normal_left_triangle_0288",
    "node": "be02",
-   "elapsed_s": 51,
+   "elapsed_s": 11098,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 31507,
+   "iteration": 33992,
    "residuals": [
-    6.39917e-07,
-    2.44539e-06,
-    8.97676e-05
+    3.72678e-07,
+    1.3405e-06,
+    9.24474e-08
    ],
-   "residual": 8.97676e-05,
+   "residual": 1.3405e-06,
    "cap": 45000,
    "target_decades": 6.0,
+   "s_per_iteration": 4.482,
+   "decades_per_1000": -0.055,
+   "eta_iterations": 2312,
+   "eta_s": 10364,
    "pace": "ok"
   },
   {
@@ -164,49 +168,33 @@
    "run": "16x",
    "case": "larger_circle_0279",
    "node": "be09",
-   "elapsed_s": 32564,
+   "elapsed_s": 43611,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 38487,
+   "iteration": 40863,
    "residuals": [
-    6.73152e-07,
-    2.2179e-06,
-    1.53259e-07
+    5.58297e-07,
+    1.88253e-06,
+    1.41779e-07
    ],
-   "residual": 2.2179e-06,
+   "residual": 1.88253e-06,
    "cap": 60000,
    "target_decades": 6.0,
-   "s_per_iteration": 4.528,
-   "decades_per_1000": 0.0266,
+   "s_per_iteration": 4.599,
+   "decades_per_1000": 0.0063,
    "pace": "flat"
-  },
-  {
-   "job": "3194150",
-   "run": "16x",
-   "case": "larger_left_triangle_0301",
-   "node": "be02",
-   "elapsed_s": 53198,
-   "limit_s": 86400,
-   "stage": "solving",
-   "log_age_s": 0,
-   "iteration": 27641,
-   "residuals": [
-    3.6774e-07,
-    1.29511e-06,
-    9.51827e-08
-   ],
-   "residual": 1.29511e-06,
-   "cap": 45000,
-   "target_decades": 6.0,
-   "s_per_iteration": 4.637,
-   "decades_per_1000": -0.089,
-   "eta_iterations": 1262,
-   "eta_s": 5854,
-   "pace": "ok"
   }
  ],
  "finished": [
+  {
+   "run": "16x",
+   "case": "larger_left_triangle_0301",
+   "status": "converged",
+   "iterations": 29960,
+   "hours": 41.529,
+   "finished": "2026-10-17T01:16:09+03:00"
+  },
   {
    "run": "16x",
    "case": "normal_left_triangle_0313",
@@ -318,14 +306,6 @@
    "iterations": 11348,
    "hours": 3.009,
    "finished": "2026-10-16T15:39:03+03:00"
-  },
-  {
-   "run": "4x",
-   "case": "larger_right_triangle_0275",
-   "status": "converged",
-   "iterations": 10840,
-   "hours": 3.189,
-   "finished": "2026-10-16T15:29:19+03:00"
   }
  ],
  "failures": [],
