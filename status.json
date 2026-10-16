@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-16T13:32:30+03:00",
+ "generated": "2026-10-16T14:03:38+03:00",
  "cases": 4500,
  "runs": [
   {
@@ -77,8 +77,8 @@
    "core_hours": 1889.4,
    "mean_hours": 0.4199,
    "done_1h": 0,
-   "done_6h": 22,
-   "done_24h": 4035,
+   "done_6h": 12,
+   "done_24h": 3951,
    "hours_left": 0.2,
    "hours_source": "fit to the finished runs"
   },
@@ -86,20 +86,20 @@
    "run": "16x",
    "label": "0.25 mm",
    "target": 4500,
-   "done": 4491,
-   "running": 10,
+   "done": 4492,
+   "running": 9,
    "pending": 0,
    "submitted": 0,
    "failed": 0,
    "held": 0,
    "end_time": 1,
    "rerun_converged": 72,
-   "core_hours": 35107.94,
-   "mean_hours": 7.6907,
-   "done_1h": 2,
+   "core_hours": 35137.42,
+   "mean_hours": 7.6954,
+   "done_1h": 3,
    "done_6h": 7,
-   "done_24h": 55,
-   "hours_left": 42.8,
+   "done_24h": 51,
+   "hours_left": 34.5,
    "hours_source": "fit to the finished runs"
   }
  ],
@@ -126,17 +126,17 @@
  "reserves": 18,
  "window": "asaydam_oct26",
  "queue": {
-  "running": 10,
+  "running": 9,
   "pending": 0
  },
- "core_hours": 37364.7,
- "quota_gib": 142.8,
+ "core_hours": 37394.2,
+ "quota_gib": 141.7,
  "backlog_gib": 0.0,
  "pause_gib": 600,
  "nodes": {
   "be09": 4,
   "be02": 2,
-  "da02": 3,
+  "da02": 2,
   "da04": 1
  },
  "jobs": [
@@ -145,22 +145,22 @@
    "run": "16x",
    "case": "larger_circle_0279",
    "node": "be09",
-   "elapsed_s": 1190,
+   "elapsed_s": 3059,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 30414,
+   "iteration": 30916,
    "residuals": [
-    1.05683e-06,
-    3.55406e-06,
-    2.57761e-07
+    1.02971e-06,
+    3.45685e-06,
+    2.4901e-07
    ],
-   "residual": 3.55406e-06,
+   "residual": 3.45685e-06,
    "cap": 45000,
-   "s_per_iteration": 3.734,
-   "decades_per_1000": -0.0898,
-   "eta_iterations": 6132,
-   "eta_s": 22898,
+   "s_per_iteration": 3.74,
+   "decades_per_1000": -0.0778,
+   "eta_iterations": 6922,
+   "eta_s": 25889,
    "pace": "ok"
   },
   {
@@ -168,68 +168,45 @@
    "run": "16x",
    "case": "normal_left_triangle_0271",
    "node": "be02",
-   "elapsed_s": 8303,
+   "elapsed_s": 10172,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 32127,
+   "iteration": 32625,
    "residuals": [
-    4.46617e-07,
-    1.69059e-06,
-    1.14667e-07
+    4.26869e-07,
+    1.61379e-06,
+    1.11561e-07
    ],
-   "residual": 1.69059e-06,
+   "residual": 1.61379e-06,
    "cap": 45000,
-   "s_per_iteration": 3.896,
-   "decades_per_1000": -0.0312,
-   "eta_iterations": 7307,
-   "eta_s": 28466,
+   "s_per_iteration": 3.717,
+   "decades_per_1000": -0.0321,
+   "eta_iterations": 6481,
+   "eta_s": 24089,
    "pace": "flat"
-  },
-  {
-   "job": "3194167",
-   "run": "16x",
-   "case": "normal_left_triangle_0314",
-   "node": "be09",
-   "elapsed_s": 18917,
-   "limit_s": 86400,
-   "stage": "solving",
-   "log_age_s": 0,
-   "iteration": 20458,
-   "residuals": [
-    2.80673e-07,
-    1.0301e-06,
-    6.59304e-08
-   ],
-   "residual": 1.0301e-06,
-   "cap": 45000,
-   "s_per_iteration": 3.921,
-   "decades_per_1000": -0.1396,
-   "eta_iterations": 92,
-   "eta_s": 362,
-   "pace": "ok"
   },
   {
    "job": "3194162",
    "run": "16x",
    "case": "normal_left_triangle_0313",
    "node": "be09",
-   "elapsed_s": 19323,
+   "elapsed_s": 21192,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 18920,
+   "iteration": 19352,
    "residuals": [
-    7.57088e-07,
-    2.76201e-06,
-    1.58976e-07
+    7.26118e-07,
+    2.60161e-06,
+    1.54038e-07
    ],
-   "residual": 2.76201e-06,
+   "residual": 2.60161e-06,
    "cap": 45000,
-   "s_per_iteration": 4.336,
-   "decades_per_1000": -0.0706,
-   "eta_iterations": 6251,
-   "eta_s": 27106,
+   "s_per_iteration": 4.177,
+   "decades_per_1000": -0.0623,
+   "eta_iterations": 6664,
+   "eta_s": 27836,
    "pace": "ok"
   },
   {
@@ -237,22 +214,22 @@
    "run": "16x",
    "case": "larger_left_triangle_0301",
    "node": "be02",
-   "elapsed_s": 21824,
+   "elapsed_s": 23693,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 19761,
+   "iteration": 20274,
    "residuals": [
-    9.09365e-07,
-    3.2413e-06,
-    2.35486e-07
+    8.62037e-07,
+    3.04731e-06,
+    2.21416e-07
    ],
-   "residual": 3.2413e-06,
+   "residual": 3.04731e-06,
    "cap": 45000,
-   "s_per_iteration": 3.484,
-   "decades_per_1000": -0.0801,
-   "eta_iterations": 6375,
-   "eta_s": 22211,
+   "s_per_iteration": 3.54,
+   "decades_per_1000": -0.0868,
+   "eta_iterations": 5577,
+   "eta_s": 19741,
    "pace": "ok"
   },
   {
@@ -260,45 +237,45 @@
    "run": "16x",
    "case": "larger_left_triangle_0296",
    "node": "da02",
-   "elapsed_s": 36479,
+   "elapsed_s": 38348,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 24399,
+   "iteration": 25000,
    "residuals": [
-    4.45248e-07,
-    1.58086e-06,
-    1.04715e-07
+    4.08626e-07,
+    1.49517e-06,
+    9.4022e-08
    ],
-   "residual": 1.58086e-06,
+   "residual": 1.49517e-06,
    "cap": 45000,
-   "s_per_iteration": 3.214,
-   "decades_per_1000": -0.0563,
-   "eta_iterations": 3535,
-   "eta_s": 11362,
-   "pace": "ok"
+   "s_per_iteration": 3.098,
+   "decades_per_1000": -0.0229,
+   "eta_iterations": 7635,
+   "eta_s": 23654,
+   "pace": "flat"
   },
   {
    "job": "3192422",
    "run": "16x",
    "case": "larger_right_triangle_0293",
    "node": "da02",
-   "elapsed_s": 46121,
+   "elapsed_s": 47990,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 24023,
+   "iteration": 24665,
    "residuals": [
-    3.20224e-07,
-    1.14256e-06,
-    8.41358e-08
+    3.00759e-07,
+    1.03215e-06,
+    7.36432e-08
    ],
-   "residual": 1.14256e-06,
+   "residual": 1.03215e-06,
    "cap": 45000,
-   "s_per_iteration": 2.904,
-   "decades_per_1000": -0.078,
-   "eta_iterations": 742,
-   "eta_s": 2154,
+   "s_per_iteration": 2.934,
+   "decades_per_1000": -0.056,
+   "eta_iterations": 245,
+   "eta_s": 720,
    "pace": "ok"
   },
   {
@@ -306,49 +283,57 @@
    "run": "16x",
    "case": "normal_left_triangle_0288",
    "node": "be09",
-   "elapsed_s": 60598,
+   "elapsed_s": 62467,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 25664,
+   "iteration": 26086,
    "residuals": [
-    8.23492e-07,
-    2.93969e-06,
-    1.98922e-07
+    7.82155e-07,
+    2.81625e-06,
+    1.84312e-07
    ],
-   "residual": 2.93969e-06,
+   "residual": 2.81625e-06,
    "cap": 45000,
-   "s_per_iteration": 4.325,
-   "decades_per_1000": -0.0222,
-   "eta_iterations": 21070,
-   "eta_s": 91127,
-   "pace": "flat"
+   "s_per_iteration": 4.253,
+   "decades_per_1000": -0.0504,
+   "eta_iterations": 8921,
+   "eta_s": 37941,
+   "pace": "ok"
   },
   {
    "job": "3190328",
    "run": "16x",
    "case": "normal_right_triangle_0282",
    "node": "da04",
-   "elapsed_s": 77263,
+   "elapsed_s": 79132,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 30660,
+   "iteration": 31229,
    "residuals": [
-    4.09973e-07,
-    1.56306e-06,
-    8.89017e-08
+    3.80596e-07,
+    1.46842e-06,
+    9.28669e-08
    ],
-   "residual": 1.56306e-06,
+   "residual": 1.46842e-06,
    "cap": 45000,
-   "s_per_iteration": 3.234,
-   "decades_per_1000": -0.0116,
-   "eta_iterations": 16748,
-   "eta_s": 54164,
+   "s_per_iteration": 3.235,
+   "decades_per_1000": -0.0349,
+   "eta_iterations": 4783,
+   "eta_s": 15471,
    "pace": "flat"
   }
  ],
  "finished": [
+  {
+   "run": "16x",
+   "case": "normal_left_triangle_0314",
+   "status": "converged",
+   "iterations": 20837,
+   "hours": 29.482,
+   "finished": "2026-10-16T14:00:38+03:00"
+  },
   {
    "run": "16x",
    "case": "normal_circle_0284",
@@ -460,14 +445,6 @@
    "iterations": 10000,
    "hours": 2.953,
    "finished": "2026-10-16T08:06:57+03:00"
-  },
-  {
-   "run": "4x",
-   "case": "normal_right_triangle_0282",
-   "status": "end_time",
-   "iterations": 10000,
-   "hours": 2.492,
-   "finished": "2026-10-16T08:06:12+03:00"
   }
  ],
  "failures": [
