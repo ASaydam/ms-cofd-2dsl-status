@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-17T01:50:19+03:00",
+ "generated": "2026-10-17T01:59:45+03:00",
  "set": "validation-loose-audit",
  "cases": 113,
  "runs": [
@@ -47,20 +47,20 @@
    "run": "16x_loose_scratch",
    "label": "0.25 mm, loose, from rest",
    "target": 113,
-   "done": 112,
-   "running": 2,
+   "done": 113,
+   "running": 1,
    "pending": 0,
    "submitted": 0,
    "failed": 0,
    "held": 0,
    "end_time": 0,
    "rerun_converged": 0,
-   "core_hours": 144.08,
-   "mean_hours": 1.2864,
-   "done_1h": 2,
+   "core_hours": 152.19,
+   "mean_hours": 1.3469,
+   "done_1h": 3,
    "done_6h": 21,
-   "done_24h": 112,
-   "hours_left": 0.2,
+   "done_24h": 113,
+   "hours_left": 0.0,
    "hours_source": "fit to the finished runs"
   },
   {
@@ -88,44 +88,26 @@
  "reserves": 1,
  "window": "asaydam_oct26",
  "queue": {
-  "running": 2,
+  "running": 1,
   "pending": 0
  },
- "core_hours": 152.5,
- "quota_gib": 140.0,
+ "core_hours": 160.6,
+ "quota_gib": 139.1,
  "backlog_gib": 0.0,
  "pause_gib": 600,
  "nodes": {
-  "be02": 1,
   "da02": 1
  },
- "jobs": [
+ "jobs": [],
+ "finished": [
   {
-   "job": "3196012",
    "run": "16x_loose_scratch",
    "case": "normal_left_triangle_0158",
-   "node": "da02",
-   "elapsed_s": 29794,
-   "limit_s": 43200,
-   "stage": "solving",
-   "log_age_s": 4,
-   "iteration": 5469,
-   "residuals": [
-    0.000320203,
-    0.0010259,
-    7.93716e-05
-   ],
-   "residual": 0.0010259,
-   "cap": 45000,
-   "target_decades": 3.0,
-   "s_per_iteration": 5.254,
-   "decades_per_1000": -0.0811,
-   "eta_iterations": 137,
-   "eta_s": 720,
-   "pace": "ok"
-  }
- ],
- "finished": [
+   "status": "converged",
+   "iterations": 5540,
+   "hours": 8.118,
+   "finished": "2026-10-17T01:58:09+03:00"
+  },
   {
    "run": "16x_loose_scratch",
    "case": "normal_right_triangle_0231",
@@ -237,14 +219,6 @@
    "iterations": 1765,
    "hours": 3.258,
    "finished": "2026-10-16T20:59:41+03:00"
-  },
-  {
-   "run": "16x_loose_scratch",
-   "case": "normal_right_triangle_0044",
-   "status": "converged",
-   "iterations": 2365,
-   "hours": 3.271,
-   "finished": "2026-10-16T20:56:19+03:00"
   }
  ],
  "failures": [],
