@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-16T17:10:26+03:00",
+ "generated": "2026-10-16T17:31:46+03:00",
  "cases": 4500,
  "runs": [
   {
@@ -76,9 +76,9 @@
    "rerun_converged": 15,
    "core_hours": 1938.46,
    "mean_hours": 0.4293,
-   "done_1h": 3,
+   "done_1h": 1,
    "done_6h": 15,
-   "done_24h": 3343,
+   "done_24h": 3266,
    "hours_left": 0.0,
    "hours_source": "fit to the finished runs"
   },
@@ -86,20 +86,20 @@
    "run": "16x",
    "label": "0.25 mm",
    "target": 4500,
-   "done": 4493,
-   "running": 8,
+   "done": 4494,
+   "running": 7,
    "pending": 0,
    "submitted": 0,
    "failed": 0,
    "held": 0,
    "end_time": 1,
    "rerun_converged": 72,
-   "core_hours": 35222.88,
-   "mean_hours": 7.7108,
-   "done_1h": 1,
+   "core_hours": 35260.66,
+   "mean_hours": 7.7174,
+   "done_1h": 2,
    "done_6h": 6,
-   "done_24h": 33,
-   "hours_left": 28.4,
+   "done_24h": 31,
+   "hours_left": 25.5,
    "hours_source": "fit to the finished runs"
   }
  ],
@@ -126,15 +126,14 @@
  "reserves": 18,
  "window": "asaydam_oct26",
  "queue": {
-  "running": 8,
+  "running": 7,
   "pending": 0
  },
- "core_hours": 37528.7,
- "quota_gib": 145.3,
+ "core_hours": 37566.5,
+ "quota_gib": 198.5,
  "backlog_gib": 0.0,
  "pause_gib": 600,
  "nodes": {
-  "be07": 1,
   "be08": 1,
   "be09": 3,
   "be02": 2,
@@ -146,22 +145,22 @@
    "run": "16x",
    "case": "smaller_rectangle_0189",
    "node": "be08",
-   "elapsed_s": 7012,
+   "elapsed_s": 8294,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 51880,
+   "iteration": 52224,
    "residuals": [
-    3.06251e-07,
-    1.05294e-06,
-    7.89344e-08
+    2.95813e-07,
+    1.03443e-06,
+    7.86293e-08
    ],
-   "residual": 1.05294e-06,
+   "residual": 1.03443e-06,
    "cap": 60000,
-   "s_per_iteration": 3.63,
-   "decades_per_1000": -0.0265,
-   "eta_iterations": 845,
-   "eta_s": 3067,
+   "s_per_iteration": 3.605,
+   "decades_per_1000": -0.0445,
+   "eta_iterations": 331,
+   "eta_s": 1192,
    "pace": "flat"
   },
   {
@@ -169,20 +168,20 @@
    "run": "16x",
    "case": "larger_circle_0279",
    "node": "be09",
-   "elapsed_s": 14270,
+   "elapsed_s": 15552,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 33891,
+   "iteration": 34209,
    "residuals": [
-    8.86618e-07,
-    2.92709e-06,
-    2.02168e-07
+    8.36211e-07,
+    2.81364e-06,
+    2.11038e-07
    ],
-   "residual": 2.92709e-06,
+   "residual": 2.81364e-06,
    "cap": 60000,
-   "s_per_iteration": 3.945,
-   "decades_per_1000": 0.0213,
+   "s_per_iteration": 4.068,
+   "decades_per_1000": 0.0091,
    "pace": "flat"
   },
   {
@@ -190,22 +189,22 @@
    "run": "16x",
    "case": "normal_left_triangle_0271",
    "node": "be02",
-   "elapsed_s": 21383,
+   "elapsed_s": 22665,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 35795,
+   "iteration": 36132,
    "residuals": [
-    3.3104e-07,
-    1.18897e-06,
-    8.20919e-08
+    3.13345e-07,
+    1.16004e-06,
+    8.39878e-08
    ],
-   "residual": 1.18897e-06,
+   "residual": 1.16004e-06,
    "cap": 45000,
-   "s_per_iteration": 3.662,
-   "decades_per_1000": -0.0528,
-   "eta_iterations": 1425,
-   "eta_s": 5218,
+   "s_per_iteration": 3.732,
+   "decades_per_1000": -0.0558,
+   "eta_iterations": 1156,
+   "eta_s": 4316,
    "pace": "ok"
   },
   {
@@ -213,22 +212,22 @@
    "run": "16x",
    "case": "normal_left_triangle_0313",
    "node": "be09",
-   "elapsed_s": 32403,
+   "elapsed_s": 33685,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 22075,
+   "iteration": 22380,
    "residuals": [
-    4.89205e-07,
-    1.78125e-06,
-    1.22677e-07
+    4.62989e-07,
+    1.7058e-06,
+    1.00067e-07
    ],
-   "residual": 1.78125e-06,
+   "residual": 1.7058e-06,
    "cap": 45000,
-   "s_per_iteration": 3.953,
-   "decades_per_1000": -0.0582,
-   "eta_iterations": 4311,
-   "eta_s": 17041,
+   "s_per_iteration": 4.202,
+   "decades_per_1000": -0.0634,
+   "eta_iterations": 3660,
+   "eta_s": 15379,
    "pace": "ok"
   },
   {
@@ -236,45 +235,22 @@
    "run": "16x",
    "case": "larger_left_triangle_0301",
    "node": "be02",
-   "elapsed_s": 34904,
+   "elapsed_s": 36186,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 23412,
+   "iteration": 23710,
    "residuals": [
-    5.92556e-07,
-    2.13125e-06,
-    1.28985e-07
+    5.79179e-07,
+    2.04489e-06,
+    1.4909e-07
    ],
-   "residual": 2.13125e-06,
+   "residual": 2.04489e-06,
    "cap": 45000,
-   "s_per_iteration": 3.862,
-   "decades_per_1000": -0.0125,
-   "eta_iterations": 26219,
-   "eta_s": 101258,
-   "pace": "flat"
-  },
-  {
-   "job": "3193173",
-   "run": "16x",
-   "case": "larger_left_triangle_0296",
-   "node": "da02",
-   "elapsed_s": 49559,
-   "limit_s": 86400,
-   "stage": "solving",
-   "log_age_s": 0,
-   "iteration": 28682,
-   "residuals": [
-    2.83044e-07,
-    1.0285e-06,
-    7.3987e-08
-   ],
-   "residual": 1.0285e-06,
-   "cap": 45000,
-   "s_per_iteration": 3.342,
-   "decades_per_1000": -0.056,
-   "eta_iterations": 218,
-   "eta_s": 728,
+   "s_per_iteration": 4.331,
+   "decades_per_1000": -0.0875,
+   "eta_iterations": 3550,
+   "eta_s": 15376,
    "pace": "ok"
   },
   {
@@ -282,26 +258,34 @@
    "run": "16x",
    "case": "normal_left_triangle_0288",
    "node": "be09",
-   "elapsed_s": 73678,
+   "elapsed_s": 74960,
    "limit_s": 86400,
    "stage": "solving",
    "log_age_s": 0,
-   "iteration": 28750,
+   "iteration": 29051,
    "residuals": [
-    6.35782e-07,
-    2.2054e-06,
-    1.55357e-07
+    5.92251e-07,
+    2.13192e-06,
+    1.41382e-07
    ],
-   "residual": 2.2054e-06,
+   "residual": 2.13192e-06,
    "cap": 45000,
-   "s_per_iteration": 4.044,
-   "decades_per_1000": -0.0335,
-   "eta_iterations": 10265,
-   "eta_s": 41511,
-   "pace": "flat"
+   "s_per_iteration": 4.199,
+   "decades_per_1000": -0.0521,
+   "eta_iterations": 6310,
+   "eta_s": 26497,
+   "pace": "ok"
   }
  ],
  "finished": [
+  {
+   "run": "16x",
+   "case": "larger_left_triangle_0296",
+   "status": "converged",
+   "iterations": 28968,
+   "hours": 37.783,
+   "finished": "2026-10-16T17:28:41+03:00"
+  },
   {
    "run": "16x",
    "case": "normal_right_triangle_0282",
@@ -413,14 +397,6 @@
    "iterations": 10627,
    "hours": 3.07,
    "finished": "2026-10-16T15:23:04+03:00"
-  },
-  {
-   "run": "4x",
-   "case": "larger_left_triangle_0301",
-   "status": "converged",
-   "iterations": 10521,
-   "hours": 2.82,
-   "finished": "2026-10-16T15:21:34+03:00"
   }
  ],
  "failures": [],
