@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-17T01:19:20+03:00",
+ "generated": "2026-10-17T01:50:19+03:00",
  "set": "validation-loose-audit",
  "cases": 113,
  "runs": [
@@ -47,20 +47,20 @@
    "run": "16x_loose_scratch",
    "label": "0.25 mm, loose, from rest",
    "target": 113,
-   "done": 111,
-   "running": 3,
+   "done": 112,
+   "running": 2,
    "pending": 0,
    "submitted": 0,
    "failed": 0,
    "held": 0,
    "end_time": 0,
    "rerun_converged": 0,
-   "core_hours": 136.07,
-   "mean_hours": 1.2259,
+   "core_hours": 144.08,
+   "mean_hours": 1.2864,
    "done_1h": 2,
-   "done_6h": 22,
-   "done_24h": 111,
-   "hours_left": 0.4,
+   "done_6h": 21,
+   "done_24h": 112,
+   "hours_left": 0.2,
    "hours_source": "fit to the finished runs"
   },
   {
@@ -88,69 +88,52 @@
  "reserves": 1,
  "window": "asaydam_oct26",
  "queue": {
-  "running": 3,
+  "running": 2,
   "pending": 0
  },
- "core_hours": 144.5,
- "quota_gib": 140.7,
+ "core_hours": 152.5,
+ "quota_gib": 140.0,
  "backlog_gib": 0.0,
  "pause_gib": 600,
  "nodes": {
   "be02": 1,
-  "da02": 1,
-  "da04": 1
+  "da02": 1
  },
  "jobs": [
-  {
-   "job": "3196045",
-   "run": "16x_loose_scratch",
-   "case": "normal_right_triangle_0231",
-   "node": "be02",
-   "elapsed_s": 27694,
-   "limit_s": 43200,
-   "stage": "solving",
-   "log_age_s": 1,
-   "iteration": 4833,
-   "residuals": [
-    0.000312159,
-    0.00107995,
-    7.38953e-05
-   ],
-   "residual": 0.00107995,
-   "cap": 45000,
-   "target_decades": 3.0,
-   "s_per_iteration": 6.316,
-   "decades_per_1000": -0.0605,
-   "eta_iterations": 552,
-   "eta_s": 3486,
-   "pace": "ok"
-  },
   {
    "job": "3196012",
    "run": "16x_loose_scratch",
    "case": "normal_left_triangle_0158",
    "node": "da02",
-   "elapsed_s": 27935,
+   "elapsed_s": 29794,
    "limit_s": 43200,
    "stage": "solving",
-   "log_age_s": 1,
-   "iteration": 5121,
+   "log_age_s": 4,
+   "iteration": 5469,
    "residuals": [
-    0.000342257,
-    0.00105758,
-    9.05994e-05
+    0.000320203,
+    0.0010259,
+    7.93716e-05
    ],
-   "residual": 0.00105758,
+   "residual": 0.0010259,
    "cap": 45000,
    "target_decades": 3.0,
-   "s_per_iteration": 5.337,
-   "decades_per_1000": -0.0212,
-   "eta_iterations": 1148,
-   "eta_s": 6126,
-   "pace": "warming up"
+   "s_per_iteration": 5.254,
+   "decades_per_1000": -0.0811,
+   "eta_iterations": 137,
+   "eta_s": 720,
+   "pace": "ok"
   }
  ],
  "finished": [
+  {
+   "run": "16x_loose_scratch",
+   "case": "normal_right_triangle_0231",
+   "status": "converged",
+   "iterations": 5104,
+   "hours": 8.004,
+   "finished": "2026-10-17T01:48:27+03:00"
+  },
   {
    "run": "16x_loose_scratch",
    "case": "larger_right_triangle_0028",
@@ -262,14 +245,6 @@
    "iterations": 2365,
    "hours": 3.271,
    "finished": "2026-10-16T20:56:19+03:00"
-  },
-  {
-   "run": "16x_loose_scratch",
-   "case": "normal_circle_0135",
-   "status": "converged",
-   "iterations": 2214,
-   "hours": 3.118,
-   "finished": "2026-10-16T20:51:36+03:00"
   }
  ],
  "failures": [],
