@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-16T22:39:43+03:00",
+ "generated": "2026-10-17T00:27:19+03:00",
  "set": "validation-loose-audit",
  "cases": 113,
  "runs": [
@@ -18,7 +18,7 @@
    "core_hours": 5.16,
    "mean_hours": 0.0457,
    "done_1h": 0,
-   "done_6h": 113,
+   "done_6h": 0,
    "done_24h": 113,
    "hours_left": 0.0,
    "hours_source": "fit to the finished runs"
@@ -38,7 +38,7 @@
    "core_hours": 1.4,
    "mean_hours": 0.0124,
    "done_1h": 0,
-   "done_6h": 113,
+   "done_6h": 0,
    "done_24h": 113,
    "hours_left": 0.0,
    "hours_source": "fit to the finished runs"
@@ -47,20 +47,20 @@
    "run": "16x_loose_scratch",
    "label": "0.25 mm, loose, from rest",
    "target": 113,
-   "done": 109,
-   "running": 5,
+   "done": 110,
+   "running": 4,
    "pending": 0,
    "submitted": 0,
    "failed": 0,
    "held": 0,
    "end_time": 0,
    "rerun_converged": 0,
-   "core_hours": 121.78,
-   "mean_hours": 1.1172,
-   "done_1h": 5,
-   "done_6h": 109,
-   "done_24h": 109,
-   "hours_left": 0.6,
+   "core_hours": 128.4,
+   "mean_hours": 1.1673,
+   "done_1h": 1,
+   "done_6h": 45,
+   "done_24h": 110,
+   "hours_left": 0.5,
    "hours_source": "fit to the finished runs"
   },
   {
@@ -78,7 +78,7 @@
    "core_hours": 1.87,
    "mean_hours": 0.0166,
    "done_1h": 0,
-   "done_6h": 113,
+   "done_6h": 0,
    "done_24h": 113,
    "hours_left": 0.0,
    "hours_source": "fit to the finished runs"
@@ -88,17 +88,17 @@
  "reserves": 1,
  "window": "asaydam_oct26",
  "queue": {
-  "running": 5,
+  "running": 4,
   "pending": 0
  },
- "core_hours": 130.2,
- "quota_gib": 143.4,
+ "core_hours": 136.8,
+ "quota_gib": 142.6,
  "backlog_gib": 0.0,
  "pause_gib": 600,
  "nodes": {
-  "da02": 2,
   "be02": 1,
-  "da04": 2
+  "da04": 2,
+  "da02": 1
  },
  "jobs": [
   {
@@ -106,47 +106,23 @@
    "run": "16x_loose_scratch",
    "case": "normal_right_triangle_0231",
    "node": "be02",
-   "elapsed_s": 18117,
+   "elapsed_s": 24573,
    "limit_s": 43200,
    "stage": "solving",
-   "log_age_s": 1,
-   "iteration": 3281,
+   "log_age_s": 3,
+   "iteration": 4326,
    "residuals": [
-    0.000465358,
-    0.00148126,
-    0.000124725
+    0.000354247,
+    0.00118069,
+    8.48374e-05
    ],
-   "residual": 0.00148126,
+   "residual": 0.00118069,
    "cap": 45000,
    "target_decades": 3.0,
-   "s_per_iteration": 6.104,
-   "decades_per_1000": -0.1633,
-   "eta_iterations": 1045,
-   "eta_s": 6377,
-   "pace": "ok"
-  },
-  {
-   "job": "3196040",
-   "run": "16x_loose_scratch",
-   "case": "larger_right_triangle_0220",
-   "node": "da04",
-   "elapsed_s": 18174,
-   "limit_s": 43200,
-   "stage": "solving",
-   "log_age_s": 2,
-   "iteration": 3549,
-   "residuals": [
-    0.000393842,
-    0.00127222,
-    0.000108169
-   ],
-   "residual": 0.00127222,
-   "cap": 45000,
-   "target_decades": 3.0,
-   "s_per_iteration": 6.047,
-   "decades_per_1000": -0.1175,
-   "eta_iterations": 890,
-   "eta_s": 5383,
+   "s_per_iteration": 6.323,
+   "decades_per_1000": -0.1111,
+   "eta_iterations": 649,
+   "eta_s": 4105,
    "pace": "ok"
   },
   {
@@ -154,49 +130,57 @@
    "run": "16x_loose_scratch",
    "case": "normal_left_triangle_0158",
    "node": "da02",
-   "elapsed_s": 18358,
+   "elapsed_s": 24814,
    "limit_s": 43200,
    "stage": "solving",
-   "log_age_s": 0,
-   "iteration": 3332,
+   "log_age_s": 2,
+   "iteration": 4538,
    "residuals": [
-    0.000492238,
-    0.00148332,
-    0.000140293
+    0.000386485,
+    0.00117005,
+    9.1302e-05
    ],
-   "residual": 0.00148332,
+   "residual": 0.00117005,
    "cap": 45000,
    "target_decades": 3.0,
-   "s_per_iteration": 5.641,
-   "decades_per_1000": -0.0241,
-   "eta_iterations": 7093,
-   "eta_s": 40013,
-   "pace": "warming up"
+   "s_per_iteration": 5.432,
+   "decades_per_1000": -0.1783,
+   "eta_iterations": 382,
+   "eta_s": 2078,
+   "pace": "ok"
   },
   {
    "job": "3195939",
    "run": "16x_loose_scratch",
    "case": "larger_right_triangle_0028",
    "node": "da04",
-   "elapsed_s": 18508,
+   "elapsed_s": 24964,
    "limit_s": 43200,
    "stage": "solving",
-   "log_age_s": 2,
-   "iteration": 3716,
+   "log_age_s": 0,
+   "iteration": 4818,
    "residuals": [
-    0.000432317,
-    0.00140621,
-    0.000133066
+    0.000337162,
+    0.00113674,
+    9.59905e-05
    ],
-   "residual": 0.00140621,
+   "residual": 0.00113674,
    "cap": 45000,
    "target_decades": 3.0,
-   "s_per_iteration": 5.967,
-   "decades_per_1000": 0.0996,
+   "s_per_iteration": 5.651,
+   "decades_per_1000": 0.0517,
    "pace": "warming up"
   }
  ],
  "finished": [
+  {
+   "run": "16x_loose_scratch",
+   "case": "larger_right_triangle_0220",
+   "status": "converged",
+   "iterations": 4620,
+   "hours": 6.627,
+   "finished": "2026-10-17T00:25:39+03:00"
+  },
   {
    "run": "16x_loose_scratch",
    "case": "normal_left_triangle_0247",
@@ -308,14 +292,6 @@
    "iterations": 1804,
    "hours": 2.993,
    "finished": "2026-10-16T20:43:58+03:00"
-  },
-  {
-   "run": "16x_loose_scratch",
-   "case": "smaller_diamond_0273",
-   "status": "converged",
-   "iterations": 1444,
-   "hours": 2.703,
-   "finished": "2026-10-16T20:33:52+03:00"
   }
  ],
  "failures": [],
