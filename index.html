@@ -110,8 +110,8 @@
 <main>
   <header>
     <div>
-      <h1>MS-COFD-2DSL dataset production</h1>
-      <div class="sub">2D steady laminar flow around obstacles · OpenFOAM on the KUACC cluster</div>
+      <h1 id="title">MS-COFD-2DSL dataset production</h1>
+      <div class="sub" id="subtitle">2D steady laminar flow around obstacles · OpenFOAM on the KUACC cluster</div>
     </div>
     <div><span id="state" class="pill live">loading</span> <span id="updated" class="sub"></span></div>
   </header>
@@ -143,7 +143,7 @@
   </section>
 
   <section class="race">
-    <div class="racehead"><h2>The race to 10⁻⁶</h2><div class="s" id="race-sum"></div></div>
+    <div class="racehead"><h2 id="race-title">The race to 10⁻⁶</h2><div class="s" id="race-sum"></div></div>
     <div class="s">Every running job is a runner, drawn as its obstacle. A runner's position is how far the solver
       residual has fallen toward the 10⁻⁶ finish line (log scale). Each lane's axis starts at its slowest runner, so
       it zooms in where the runners are. Between updates, runners keep moving at their measured pace. Hover or tap
@@ -190,7 +190,10 @@
 </main>
 
 <script>
-const BASE = 'https://raw.githubusercontent.com/ASaydam/ms-cofd-2dsl-status/data/';
+// ?set=<name> shows a validation run set, published by its own data root to the branch data-<name>
+// (hpc/publish_status.py); without it the page shows the dataset production (branch data)
+const SET = (new URLSearchParams(location.search).get('set') || '').replace(/[^A-Za-z0-9_-]/g, '');
+const BASE = `https://raw.githubusercontent.com/ASaydam/ms-cofd-2dsl-status/${SET ? 'data-' + SET : 'data'}/`;
 // rough hours per run when a level has no finished runs yet (pilots)
 const DEFAULT_HOURS = {'0.25x': 0.02, 'base_fo': 0.06, 'base_lu': 0.06, '4x': 0.4, '16x': 3.5};
 const OVERHEAD = 1.08;   // meshing, arrays, attributes and archive on top of the solver time
@@ -218,6 +221,12 @@ function render(s) {
   el('state').textContent = stale ? 'stale' : 'live';
   el('state').className = 'pill ' + (stale ? 'stale' : 'live');
   el('updated').textContent = `updated ${ago(generated)} · ${generated.toLocaleString()}`;
+  if (s.set) {
+    el('title').textContent = `MS-COFD-2DSL · ${s.set}`;
+    el('subtitle').textContent = 'Validation run set, not part of the dataset · OpenFOAM on the KUACC cluster';
+    el('race-title').textContent = 'The race to the stopping criterion';
+    document.title = `MS-COFD-2DSL · ${s.set}`;
+  }
 
   const runs = s.runs;
   const used = runs.reduce((a, r) => a + r.core_hours, 0);
@@ -391,9 +400,11 @@ function renderRace(s, force = false) {
 
     // the axis starts at the decade above the slowest runner (at most 1, at least one decade before the finish)
     const slowest = solving.length ? Math.max(...solving.map(j => j.residual), 1e-5) : 1;
-    const s0 = Math.max(Math.min(Math.ceil(Math.log10(slowest)), 0), -5);
-    const xOf = res => X0 + (X1 - X0) * Math.min(Math.max((s0 - Math.log10(res)) / (s0 + 6), 0), 1);
-    race.lanes[run] = {xOf};
+    // the finish line: the residualControl of the lane's runs (10⁻⁶ in the dataset, 10⁻³ in the loose audit)
+    const target = Math.round(Math.max(...lane.map(j => j.target_decades ?? 6)));
+    const s0 = Math.max(Math.min(Math.ceil(Math.log10(slowest)), 0), 1 - target);
+    const xOf = res => X0 + (X1 - X0) * Math.min(Math.max((s0 - Math.log10(res)) / (s0 + target), 0), 1);
+    race.lanes[run] = {xOf, target};
 
     // rows: runners from left to right, each in the first row where it does not overlap the one before it
     const items = solving.map(j => ({j, x: xOf(j.residual)})).sort((a, b) => a.x - b.x);
@@ -418,9 +429,9 @@ function renderRace(s, force = false) {
         <rect x="3" y="3" width="3" height="3" style="fill:var(--text)"/></pattern></defs>
       <rect class="band" x="${X0}" y="${TOP - 2}" width="${X1 - X0}" height="${H - TOP + 2}" rx="4"/>
       <text class="zone" x="2" y="${TOP - 5}">pit</text>`;
-    for (let e = s0; e >= -6; e--) {
+    for (let e = s0; e >= -target; e--) {
       const x = xOf(10 ** e);
-      if (e > -6) svg += `<line class="tick" x1="${x}" x2="${x}" y1="${TOP - 2}" y2="${H}"/>`;
+      if (e > -target) svg += `<line class="tick" x1="${x}" x2="${x}" y1="${TOP - 2}" y2="${H}"/>`;
       svg += `<text class="label" x="${x}" y="${TOP - 5}" text-anchor="${e === s0 ? 'start' : 'middle'}">${pow10(e)}</text>`;
     }
     svg += `<rect x="${X1 - 3}" y="${TOP - 2}" width="6" height="${H - TOP + 2}" fill="url(#chk-${run.replace('.', '')})"/>`;
@@ -491,7 +502,7 @@ function tipHtml(j) {
     const at = new Date(generated + j.eta_s * 1000);
     const when = j.eta_s > 12 * 3600 ? at.toLocaleString([], {weekday: 'short', hour: '2-digit', minute: '2-digit'})
                                      : at.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-    out.push(`Reaches 10⁻⁶ in ~${duration(j.eta_s)} <span class="s">(≈ ${when})</span>`);
+    out.push(`Reaches ${pow10(-Math.round(j.target_decades ?? 6))} in ~${duration(j.eta_s)} <span class="s">(≈ ${when})</span>`);
   }
   out.push(`Job time ${duration(j.elapsed_s)}${j.limit_s ? ` of ${duration(j.limit_s)}` : ''}`);
   const notes = [];
@@ -537,7 +548,8 @@ function tickRace() {
   if (!(dt > 0)) return;
   document.querySelectorAll('#lanes .runner[data-move]').forEach(g => {
     const j = race.byJob.get(g.dataset.job);
-    const log = Math.max(Math.log10(j.residual) + j.decades_per_1000 / 1000 * dt / j.s_per_iteration, -5.98);
+    const log = Math.max(Math.log10(j.residual) + j.decades_per_1000 / 1000 * dt / j.s_per_iteration,
+                         0.02 - race.lanes[j.run].target);
     g.style.transform = `translate(${race.lanes[j.run].xOf(10 ** log)}px, ${g.dataset.y}px)`;
   });
 }
