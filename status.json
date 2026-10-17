@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-17T01:59:45+03:00",
+ "generated": "2026-10-17T04:49:35+03:00",
  "set": "validation-loose-audit",
  "cases": 113,
  "runs": [
@@ -48,7 +48,7 @@
    "label": "0.25 mm, loose, from rest",
    "target": 113,
    "done": 113,
-   "running": 1,
+   "running": 0,
    "pending": 0,
    "submitted": 0,
    "failed": 0,
@@ -57,8 +57,8 @@
    "rerun_converged": 0,
    "core_hours": 152.19,
    "mean_hours": 1.3469,
-   "done_1h": 3,
-   "done_6h": 21,
+   "done_1h": 0,
+   "done_6h": 4,
    "done_24h": 113,
    "hours_left": 0.0,
    "hours_source": "fit to the finished runs"
@@ -88,16 +88,14 @@
  "reserves": 1,
  "window": "asaydam_oct26",
  "queue": {
-  "running": 1,
+  "running": 0,
   "pending": 0
  },
  "core_hours": 160.6,
- "quota_gib": 139.1,
+ "quota_gib": 139.2,
  "backlog_gib": 0.0,
  "pause_gib": 600,
- "nodes": {
-  "da02": 1
- },
+ "nodes": {},
  "jobs": [],
  "finished": [
   {
