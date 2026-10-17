@@ -1,0 +1,98 @@
+{
+ "generated": "2026-10-18T02:57:47+03:00",
+ "set": "validation-repro-check",
+ "cases": 3,
+ "runs": [
+  {
+   "run": "0.25x",
+   "label": "2 mm",
+   "target": 3,
+   "done": 0,
+   "running": 0,
+   "pending": 0,
+   "submitted": 0,
+   "failed": 0,
+   "held": 0,
+   "end_time": 0,
+   "rerun_converged": 0,
+   "core_hours": 0.0,
+   "mean_hours": null,
+   "done_1h": 0,
+   "done_6h": 0,
+   "done_24h": 0,
+   "hours_left": null,
+   "hours_source": null
+  },
+  {
+   "run": "base_lu",
+   "label": "1 mm",
+   "target": 3,
+   "done": 0,
+   "running": 3,
+   "pending": 0,
+   "submitted": 0,
+   "failed": 0,
+   "held": 0,
+   "end_time": 0,
+   "rerun_converged": 0,
+   "core_hours": 0.0,
+   "mean_hours": null,
+   "done_1h": 0,
+   "done_6h": 0,
+   "done_24h": 0,
+   "hours_left": null,
+   "hours_source": null
+  }
+ ],
+ "unsteady": [],
+ "reserves": 0,
+ "window": "asaydam_oct26",
+ "queue": {
+  "running": 4,
+  "pending": 0
+ },
+ "core_hours": 0.0,
+ "quota_gib": 330.4,
+ "backlog_gib": 0.0,
+ "pause_gib": 600,
+ "nodes": {
+  "be11": 1,
+  "be12": 2,
+  "be08": 1
+ },
+ "jobs": [
+  {
+   "job": "3197483",
+   "run": "base_lu",
+   "case": "normal_circle_0001",
+   "node": "be11",
+   "elapsed_s": 2,
+   "limit_s": 7200,
+   "stage": "starting",
+   "pace": "starting"
+  },
+  {
+   "job": "3197484",
+   "run": "base_lu",
+   "case": "normal_rectangle_0001",
+   "node": "be12",
+   "elapsed_s": 2,
+   "limit_s": 7200,
+   "stage": "starting",
+   "pace": "starting"
+  },
+  {
+   "job": "3197485",
+   "run": "base_lu",
+   "case": "normal_right_triangle_0247",
+   "node": "be12",
+   "elapsed_s": 2,
+   "limit_s": 7200,
+   "stage": "starting",
+   "pace": "starting"
+  }
+ ],
+ "finished": [],
+ "failures": [],
+ "interrupted": 0
+}
