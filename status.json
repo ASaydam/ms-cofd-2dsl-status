@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-18T02:57:47+03:00",
+ "generated": "2026-10-18T03:02:36+03:00",
  "set": "validation-repro-check",
  "cases": 3,
  "runs": [
@@ -7,7 +7,7 @@
    "run": "0.25x",
    "label": "2 mm",
    "target": 3,
-   "done": 0,
+   "done": 3,
    "running": 0,
    "pending": 0,
    "submitted": 0,
@@ -15,84 +15,98 @@
    "held": 0,
    "end_time": 0,
    "rerun_converged": 0,
-   "core_hours": 0.0,
-   "mean_hours": null,
-   "done_1h": 0,
-   "done_6h": 0,
-   "done_24h": 0,
-   "hours_left": null,
-   "hours_source": null
+   "core_hours": 0.01,
+   "mean_hours": 0.0033,
+   "done_1h": 3,
+   "done_6h": 3,
+   "done_24h": 3,
+   "hours_left": 0.0,
+   "hours_source": "mean of the finished runs"
   },
   {
    "run": "base_lu",
    "label": "1 mm",
    "target": 3,
-   "done": 0,
-   "running": 3,
+   "done": 3,
+   "running": 0,
    "pending": 0,
    "submitted": 0,
    "failed": 0,
    "held": 0,
    "end_time": 0,
    "rerun_converged": 0,
-   "core_hours": 0.0,
-   "mean_hours": null,
-   "done_1h": 0,
-   "done_6h": 0,
-   "done_24h": 0,
-   "hours_left": null,
-   "hours_source": null
+   "core_hours": 0.12,
+   "mean_hours": 0.039,
+   "done_1h": 3,
+   "done_6h": 3,
+   "done_24h": 3,
+   "hours_left": 0.0,
+   "hours_source": "mean of the finished runs"
   }
  ],
  "unsteady": [],
  "reserves": 0,
  "window": "asaydam_oct26",
  "queue": {
-  "running": 4,
+  "running": 0,
   "pending": 0
  },
- "core_hours": 0.0,
- "quota_gib": 330.4,
+ "core_hours": 0.1,
+ "quota_gib": 330.1,
  "backlog_gib": 0.0,
  "pause_gib": 600,
- "nodes": {
-  "be11": 1,
-  "be12": 2,
-  "be08": 1
- },
- "jobs": [
+ "nodes": {},
+ "jobs": [],
+ "finished": [
   {
-   "job": "3197483",
-   "run": "base_lu",
+   "run": "0.25x",
+   "case": "normal_right_triangle_0247",
+   "status": "converged",
+   "iterations": 516,
+   "hours": 0.005,
+   "finished": "2026-10-18T03:02:07+03:00"
+  },
+  {
+   "run": "0.25x",
    "case": "normal_circle_0001",
-   "node": "be11",
-   "elapsed_s": 2,
-   "limit_s": 7200,
-   "stage": "starting",
-   "pace": "starting"
+   "status": "converged",
+   "iterations": 332,
+   "hours": 0.003,
+   "finished": "2026-10-18T03:01:29+03:00"
   },
   {
-   "job": "3197484",
-   "run": "base_lu",
-   "case": "normal_rectangle_0001",
-   "node": "be12",
-   "elapsed_s": 2,
-   "limit_s": 7200,
-   "stage": "starting",
-   "pace": "starting"
-  },
-  {
-   "job": "3197485",
    "run": "base_lu",
    "case": "normal_right_triangle_0247",
-   "node": "be12",
-   "elapsed_s": 2,
-   "limit_s": 7200,
-   "stage": "starting",
-   "pace": "starting"
+   "status": "converged",
+   "iterations": 1207,
+   "hours": 0.052,
+   "finished": "2026-10-18T03:01:18+03:00"
+  },
+  {
+   "run": "base_lu",
+   "case": "normal_circle_0001",
+   "status": "converged",
+   "iterations": 904,
+   "hours": 0.044,
+   "finished": "2026-10-18T03:00:51+03:00"
+  },
+  {
+   "run": "0.25x",
+   "case": "normal_rectangle_0001",
+   "status": "converged",
+   "iterations": 173,
+   "hours": 0.002,
+   "finished": "2026-10-18T03:00:01+03:00"
+  },
+  {
+   "run": "base_lu",
+   "case": "normal_rectangle_0001",
+   "status": "converged",
+   "iterations": 513,
+   "hours": 0.022,
+   "finished": "2026-10-18T02:59:27+03:00"
   }
  ],
- "finished": [],
  "failures": [],
  "interrupted": 0
 }
